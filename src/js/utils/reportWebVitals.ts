@@ -6,13 +6,24 @@ import type { ReportHandler } from 'web-vitals';
  */
 const reportWebVitals = (onPerfEntry?: ReportHandler): void => {
   if (!onPerfEntry) return;
-  import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-    getCLS(onPerfEntry);
-    getFID(onPerfEntry);
-    getFCP(onPerfEntry);
-    getLCP(onPerfEntry);
-    getTTFB(onPerfEntry);
-  });
+  import('web-vitals')
+    .then((mod: any) => {
+      // Support both legacy get* API and modern on* API across versions
+      const onCLS = mod.onCLS || mod.getCLS;
+      const onFID = mod.onFID || mod.getFID;
+      const onFCP = mod.onFCP || mod.getFCP;
+      const onLCP = mod.onLCP || mod.getLCP;
+      const onTTFB = mod.onTTFB || mod.getTTFB;
+
+      onCLS?.(onPerfEntry);
+      onFID?.(onPerfEntry);
+      onFCP?.(onPerfEntry);
+      onLCP?.(onPerfEntry);
+      onTTFB?.(onPerfEntry);
+    })
+    .catch(() => {
+      // no-op if web-vitals failed to load
+    });
 };
 
 export default reportWebVitals;
