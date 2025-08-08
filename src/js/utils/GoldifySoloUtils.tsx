@@ -72,7 +72,6 @@ export const getSpotifyAuthenticationLink = (): string => {
   url += '&scope=' + encodeURIComponent(scope);
   url += '&redirect_uri=' + encodeURIComponent(redirectUri);
   url += '&state=' + encodeURIComponent(state);
-  url += '&show_dialog=true'; // Force re-authorization to get updated scopes
 
   return url;
 };

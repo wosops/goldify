@@ -3,21 +3,8 @@ import { red } from '@mui/material/colors';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { getSpotifyRedirectURL } from './GoldifySoloUtils';
 import { SpotifyTrack } from './TopListeningDataUtils';
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-} from '@dnd-kit/core';
-import {
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-  arrayMove,
-} from '@dnd-kit/sortable';
+import { DragEndEvent } from '@dnd-kit/core';
+import { arrayMove } from '@dnd-kit/sortable';
 import {
   useSortable,
 } from '@dnd-kit/sortable';
@@ -36,7 +23,6 @@ interface SortableItemProps {
 interface SortableListProps {
   items: SortableTrackItem[];
   removeTrackItemHandler: (track: SpotifyTrack) => void;
-  onDragEnd: (event: DragEndEvent) => void;
 }
 
 /**
@@ -161,37 +147,16 @@ export const SortableItem: React.FC<SortableItemProps> = ({
 export const SortableList: React.FC<SortableListProps> = ({ 
   items, 
   removeTrackItemHandler,
-  onDragEnd 
 }) => {
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
-  const itemIds = items.map(item => item.id || item.track.id);
-
   return (
-    <DndContext 
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={onDragEnd}
-    >
-      <SortableContext 
-        items={itemIds}
-        strategy={verticalListSortingStrategy}
-      >
-        <tbody>
-          {items.map((value) => (
-            <SortableItem
-              key={value.id || value.track.id}
-              listValue={value}
-              removeTrackItemHandler={removeTrackItemHandler}
-            />
-          ))}
-        </tbody>
-      </SortableContext>
-    </DndContext>
+    <tbody>
+      {items.map((value) => (
+        <SortableItem
+          key={value.id || value.track.id}
+          listValue={value}
+          removeTrackItemHandler={removeTrackItemHandler}
+        />
+      ))}
+    </tbody>
   );
-}; 
+};

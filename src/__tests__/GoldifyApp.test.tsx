@@ -29,11 +29,11 @@ test('Run Web Vitals', () => {
   reportWebVitals(console.log);
 });
 
-test('Load index script file without error', () => {
+test('Load index script file without error', async () => {
   const root = document.createElement('div');
   root.id = 'root';
   document.body.appendChild(root);
-  act(() => {
-    require('../index.tsx');
+  await act(async () => {
+    await import('../index.tsx');
   });
-}); 
+});

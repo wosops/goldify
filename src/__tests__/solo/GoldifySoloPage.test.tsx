@@ -11,7 +11,7 @@ import {
 import { retrieveUserDataAxios } from "../../js/utils/UserInfoUtils";
 import { HOME_PAGE_PATH } from "../../js/utils/constants";
 
-jest.mock("../../js/utils/GoldifySoloUtils", () => ({
+vi.mock("../../js/utils/GoldifySoloUtils", () => ({
   retrieveAuthenticationCode: jest.fn(),
   retrieveAuthorization: jest.fn(),
   retrieveTokensAxios: jest.fn(),
@@ -20,7 +20,7 @@ jest.mock("../../js/utils/GoldifySoloUtils", () => ({
   clearAuthCodeFromURL: jest.fn(),
 }));
 
-jest.mock("../../js/utils/UserInfoUtils", () => ({
+vi.mock("../../js/utils/UserInfoUtils", () => ({
   retrieveUserDataAxios: jest.fn(),
 }));
 
@@ -29,7 +29,7 @@ import * as userInfoFixtures from "../../__fixtures__/UserInfoFixtures";
 
 describe('GoldifySoloPage Component', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test("renders loading page when authentication code is available", async () => {

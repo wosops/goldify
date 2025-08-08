@@ -9,14 +9,18 @@ import {
 import { retrieveTopListeningDataAxios } from "../../../js/utils/TopListeningDataUtils";
 import { HOME_PAGE_PATH } from "../../../js/utils/constants";
 
-jest.mock("../../../js/utils/GoldifySoloUtils", () => ({
+vi.mock("../../../js/utils/GoldifySoloUtils", () => ({
   replaceWindowURL: jest.fn(),
   getSpotifyRedirectURL: jest.fn(),
 }));
 
-jest.mock("../../../js/utils/TopListeningDataUtils", () => ({
-  retrieveTopListeningDataAxios: jest.fn(),
-}));
+vi.mock("../../../js/utils/TopListeningDataUtils", async (importOriginal) => {
+  const actual: any = await importOriginal();
+  return {
+    ...actual,
+    retrieveTopListeningDataAxios: vi.fn(),
+  };
+});
 
 import * as goldifySoloFixtures from "../../../__fixtures__/GoldifySoloFixtures";
 import * as topListeningDataFixtures from "../../../__fixtures__/TopListeningDataFixtures";
@@ -37,7 +41,7 @@ describe('TopListeningData Component', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockGetRemovedTrackData.mockReturnValue({ items: [] });
   });
 

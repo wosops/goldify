@@ -121,14 +121,17 @@ export const findExistingGoldifyPlaylistByName = async (
 ): Promise<SpotifyPlaylist | null> => {
   const headers = basicHeaders(retrievedTokenData);
   try {
-    const response = await axios.get<SpotifyPlaylistsResponse>(
-      getUserPlaylistsUrl(), 
-      headers
-    );
-    const playlists = response.data.items;
-    
-    const playlistFound = playlists.find(playlist => playlist.name === playlistName);
-    return playlistFound || null;
+    let url: string | null = getUserPlaylistsUrl();
+    while (url) {
+      const response: AxiosResponse<SpotifyPlaylistsResponse> = await axios.get(url, headers);
+      const playlists = response.data.items;
+      const playlistFound = playlists.find((playlist: SpotifyPlaylist) => playlist.name === playlistName);
+      if (playlistFound) {
+        return playlistFound;
+      }
+      url = response.data.next;
+    }
+    return null;
   } catch (error) {
     console.error('Error finding existing playlist:', error);
     return null;

@@ -1,15 +1,17 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import GoldifyPlaylistData from "../../../js/solo/goldify-playlist/GoldifyPlaylistData";
+import { GOLDIFY_PLAYLIST_NAME } from "../../../js/utils/constants";
+import { getPlaylistTracksById } from "../../../js/utils/playlistTracks";
 
 // Mock the utility functions
-jest.mock("../../../js/utils/GoldifySoloUtils", () => ({
+vi.mock("../../../js/utils/GoldifySoloUtils", () => ({
   replaceWindowURL: jest.fn(),
   getSpotifyRedirectURL: jest.fn(),
 }));
 
-jest.mock("../../../js/utils/playlistTracks", () => ({
+vi.mock("../../../js/utils/playlistTracks", () => ({
   getPlaylistTracksById: jest.fn(),
   replacePlaylistTracks: jest.fn(),
 }));
@@ -18,11 +20,11 @@ describe('GoldifyPlaylistData Component', () => {
   const mockAutoFillCompletedHandler = jest.fn();
   
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  test("renders placeholder component when no data", () => {
-    render(
+  test("renders empty container when no token/data", () => {
+    const { container } = render(
       <GoldifyPlaylistData
         retrievedTokenData={null}
         goldifyPlaylistId="test-id"
@@ -30,12 +32,63 @@ describe('GoldifyPlaylistData Component', () => {
         autoFillCompletedHandler={mockAutoFillCompletedHandler}
       />
     );
-    
-    // Should render the component heading
-    expect(screen.getByRole('heading', { name: 'Goldify Playlist Data' })).toBeInTheDocument();
+    expect(container.firstChild).toBeEmptyDOMElement();
   });
 
-  test("renders placeholder component with valid props", () => {
+  test("renders playlist header after data loads", async () => {
+    (getPlaylistTracksById as jest.Mock).mockResolvedValue({
+      href: '',
+      items: [
+        {
+          added_at: '',
+          added_by: { external_urls: { spotify: '' }, href: '', id: '', type: '', uri: '' },
+          is_local: false,
+          primary_color: null,
+          track: {
+            album: {
+              album_type: 'album',
+              artists: [
+                { external_urls: { spotify: '' }, href: '', id: 'a1', name: 'Artist', type: 'artist', uri: '' },
+              ],
+              external_urls: { spotify: '' },
+              href: '',
+              id: 'alb1',
+              images: [{ height: 50, url: 'http://image', width: 50 }],
+              name: 'Album',
+              release_date: '',
+              release_date_precision: '',
+              total_tracks: 1,
+              type: 'album',
+              uri: '',
+            },
+            artists: [
+              { external_urls: { spotify: '' }, href: '', id: 'a1', name: 'Artist', type: 'artist', uri: '' },
+            ],
+            disc_number: 1,
+            duration_ms: 1000,
+            explicit: false,
+            external_ids: { isrc: '' },
+            external_urls: { spotify: '' },
+            href: '',
+            id: 't1',
+            is_local: false,
+            name: 'Track 1',
+            popularity: 0,
+            preview_url: null,
+            track_number: 1,
+            type: 'track',
+            uri: 'spotify:track:t1',
+          },
+          video_thumbnail: { url: null },
+        },
+      ],
+      limit: 1,
+      next: null,
+      offset: 0,
+      previous: null,
+      total: 1,
+    });
+
     render(
       <GoldifyPlaylistData
         retrievedTokenData={{ access_token: "test-token" }}
@@ -44,9 +97,11 @@ describe('GoldifyPlaylistData Component', () => {
         autoFillCompletedHandler={mockAutoFillCompletedHandler}
       />
     );
-    
-    // Should render the component heading and new playlist indicator
-    expect(screen.getByRole('heading', { name: 'Goldify Playlist Data' })).toBeInTheDocument();
-    expect(screen.getByText('This is a newly created playlist!')).toBeInTheDocument();
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole('heading', { name: `Your ${GOLDIFY_PLAYLIST_NAME} Playlist` })
+      ).toBeInTheDocument()
+    );
   });
 }); 

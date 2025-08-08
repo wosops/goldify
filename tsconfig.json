@@ -18,7 +18,7 @@
     "noImplicitReturns": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "types": ["jest", "node"],
+    "types": ["jest", "node", "vitest/globals"],
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
