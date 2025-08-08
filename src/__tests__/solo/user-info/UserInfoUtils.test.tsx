@@ -24,7 +24,8 @@ test('Check for to make sure retrieveUserDataAxios throws error on bad data', as
   const tokenData: TokenData = goldifySoloFixtures.getTokensTestData();
   
   mockedAxios.get.mockResolvedValue(null);
-  mockedAxios.isAxiosError = () => true;
+  // Cast to any to satisfy complex MockInstance intersection type
+  (mockedAxios as any).isAxiosError = () => true;
   const result = await retrieveUserDataAxios(tokenData);
   expect(result).toHaveProperty('error');
   expect(console.error).toHaveBeenCalled();

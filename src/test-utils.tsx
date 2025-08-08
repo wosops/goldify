@@ -8,14 +8,7 @@ interface AllTheProvidersProps {
 }
 
 const AllTheProviders: React.FC<AllTheProvidersProps> = ({ children, initialEntries = ['/'] }) => {
-  return (
-    <MemoryRouter
-      initialEntries={initialEntries}
-      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-    >
-      {children}
-    </MemoryRouter>
-  );
+  return <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>;
 };
 
 const customRender = (

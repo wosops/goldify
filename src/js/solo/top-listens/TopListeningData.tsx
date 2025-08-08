@@ -23,7 +23,7 @@ import {
 import { TokenData } from '../../utils/UserInfoUtils';
 
 interface TopListeningDataProps {
-  retrievedTokenData: TokenData;
+  retrievedTokenData: TokenData | null;
   goldifyUriList: string[];
   addTrackHandler: (track: SpotifyTrack) => void;
   playlistDirty: boolean;

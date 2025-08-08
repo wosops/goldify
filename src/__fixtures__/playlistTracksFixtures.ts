@@ -56,6 +56,7 @@ export interface SpotifyTrack {
 export interface SpotifyPlaylistTrack {
   added_at: string;
   added_by: {
+    external_urls: { spotify: string };
     href: string;
     id: string;
     type: string;
@@ -63,6 +64,8 @@ export interface SpotifyPlaylistTrack {
   };
   is_local: boolean;
   track: SpotifyTrack;
+  primary_color: string | null;
+  video_thumbnail: { url: string | null };
 }
 
 export interface SpotifyPlaylistTracksResponse {
@@ -79,12 +82,15 @@ export const testTrack = (trackName: string, trackId: string): SpotifyPlaylistTr
   return {
     added_at: testTimeStamp,
     added_by: {
+      external_urls: { spotify: '' },
       href: 'https://api.spotify.com/v1/users/' + testUserId,
       id: testUserId,
       type: 'user',
       uri: 'spotify:user:' + testUserId,
     },
     is_local: false,
+    primary_color: null,
+    video_thumbnail: { url: null },
     track: {
       album: {
         album_type: 'single',

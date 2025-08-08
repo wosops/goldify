@@ -18,17 +18,9 @@ export interface UserExternalUrls {
   spotify: string;
 }
 
-export interface UserData {
-  id: string;
-  display_name: string;
-  email: string;
-  images: UserImage[];
-  followers: UserFollowers;
-  external_urls: UserExternalUrls;
-  country: string;
-}
+import type { SpotifyUser } from '../js/utils/UserInfoUtils';
 
-export const getUserTestData = (): UserData => {
+export const getUserTestData = (): SpotifyUser => {
   return {
     id: testUserId,
     display_name: testUserDisplayName,
@@ -45,5 +37,8 @@ export const getUserTestData = (): UserData => {
       spotify: testUserExternalUrlSpotify,
     },
     country: testUserCountry,
+    href: '',
+    type: 'user',
+    uri: '',
   };
 }; 

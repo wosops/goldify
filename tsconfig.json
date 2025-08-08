@@ -17,7 +17,7 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "types": ["node", "vitest/globals"],
     "resolveJsonModule": true,
     "isolatedModules": true,

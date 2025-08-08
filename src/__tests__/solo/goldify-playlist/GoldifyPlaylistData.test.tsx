@@ -91,7 +91,7 @@ describe('GoldifyPlaylistData Component', () => {
 
     render(
       <GoldifyPlaylistData
-        retrievedTokenData={{ access_token: "test-token" }}
+        retrievedTokenData={{ access_token: 'test-token', token_type: 'Bearer' }}
         goldifyPlaylistId="test-playlist-id"
         newlyCreatedPlaylist={true}
         autoFillCompletedHandler={mockAutoFillCompletedHandler}

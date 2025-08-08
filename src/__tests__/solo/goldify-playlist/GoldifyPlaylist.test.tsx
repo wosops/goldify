@@ -24,7 +24,6 @@ describe('GoldifyPlaylist Component', () => {
       <GoldifyPlaylist
         retrievedTokenData={null}
         userData={null}
-        newlyCreatedPlaylist={false}
         autoFillCompletedHandler={mockAutoFillCompletedHandler}
       />
     );
@@ -36,9 +35,17 @@ describe('GoldifyPlaylist Component', () => {
   test("renders playlist component with valid props", () => {
     const { container } = render(
       <GoldifyPlaylist
-        retrievedTokenData={{ access_token: "test-token" }}
-        userData={{ id: "test-user", display_name: "Test User" }}
-        newlyCreatedPlaylist={true}
+        retrievedTokenData={{ access_token: 'test-token', token_type: 'Bearer' }}
+        userData={{
+          id: 'test-user',
+          display_name: 'Test User',
+          external_urls: { spotify: '' },
+          followers: { total: 0 },
+          href: '',
+          images: [],
+          type: 'user',
+          uri: '',
+        }}
         autoFillCompletedHandler={mockAutoFillCompletedHandler}
       />
     );

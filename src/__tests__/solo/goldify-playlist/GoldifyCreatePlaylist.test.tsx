@@ -24,7 +24,7 @@ describe('GoldifyCreatePlaylist Component', () => {
   test("renders create playlist component with heading", () => {
     render(
       <GoldifyCreatePlaylist
-        retrievedTokenData={{}}
+        retrievedTokenData={{ access_token: 'x', token_type: 'Bearer' }}
         userData={null}
         playlistUpdater={mockPlaylistUpdater}
       />
@@ -39,7 +39,7 @@ describe('GoldifyCreatePlaylist Component', () => {
     
     render(
       <GoldifyCreatePlaylist
-        retrievedTokenData={{}}
+        retrievedTokenData={{ access_token: 'x', token_type: 'Bearer' }}
         userData={testUser}
         playlistUpdater={mockPlaylistUpdater}
       />
@@ -51,7 +51,7 @@ describe('GoldifyCreatePlaylist Component', () => {
   test("does not display user name when userData is null", () => {
     render(
       <GoldifyCreatePlaylist
-        retrievedTokenData={{}}
+        retrievedTokenData={{ access_token: 'x', token_type: 'Bearer' }}
         userData={null}
         playlistUpdater={mockPlaylistUpdater}
       />

@@ -43,6 +43,15 @@ declare module '*.ttf' {
   export default content;
 }
 
+// React 19 type shim for react-dom/client when using bundler resolution
+declare module 'react-dom/client' {
+  import { ReactNode } from 'react';
+  interface Root {
+    render(children: ReactNode): void;
+  }
+  export function createRoot(container: Element | DocumentFragment): Root;
+}
+
 // Minimal Jest type shims so existing casts like `as jest.Mock` compile under Vitest
 declare namespace jest {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
