@@ -8,8 +8,9 @@ import {
 } from '../../js/utils/playlistTracks';
 import { TokenData } from '../../js/utils/UserInfoUtils';
 
-jest.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+vi.mock('axios');
+import type { Mocked } from 'vitest';
+const mockedAxios = axios as Mocked<typeof axios>;
 
 import * as goldifySoloFixtures from '../../__fixtures__/GoldifySoloFixtures';
 import * as playlistTracksFixtures from '../../__fixtures__/playlistTracksFixtures';
@@ -17,12 +18,12 @@ import * as playlistTracksFixtures from '../../__fixtures__/playlistTracksFixtur
 // Mock console.error to avoid noise in tests
 const originalConsoleError = console.error;
 beforeEach(() => {
-  console.error = jest.fn();
+  console.error = vi.fn();
 });
 
 afterEach(() => {
   console.error = originalConsoleError;
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 test('Confirm playlistTracksUrl returns the correct Spotify API URL including params', () => {

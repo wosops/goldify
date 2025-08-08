@@ -10,8 +10,8 @@ import { retrieveTopListeningDataAxios } from "../../../js/utils/TopListeningDat
 import { HOME_PAGE_PATH } from "../../../js/utils/constants";
 
 vi.mock("../../../js/utils/GoldifySoloUtils", () => ({
-  replaceWindowURL: jest.fn(),
-  getSpotifyRedirectURL: jest.fn(),
+  replaceWindowURL: vi.fn(),
+  getSpotifyRedirectURL: vi.fn(),
 }));
 
 vi.mock("../../../js/utils/TopListeningDataUtils", async (importOriginal) => {
@@ -26,9 +26,9 @@ import * as goldifySoloFixtures from "../../../__fixtures__/GoldifySoloFixtures"
 import * as topListeningDataFixtures from "../../../__fixtures__/TopListeningDataFixtures";
 
 describe('TopListeningData Component', () => {
-  const mockAddTrackHandler = jest.fn();
-  const mockOnAutoFillCompleteHandler = jest.fn();
-  const mockGetRemovedTrackData = jest.fn();
+  const mockAddTrackHandler = vi.fn();
+  const mockOnAutoFillCompleteHandler = vi.fn();
+  const mockGetRemovedTrackData = vi.fn();
 
   const defaultProps = {
     retrievedTokenData: goldifySoloFixtures.getTokensTestData(),
@@ -59,7 +59,7 @@ describe('TopListeningData Component', () => {
   });
 
   test("fetches top listening data when token is provided", async () => {
-    (retrieveTopListeningDataAxios as jest.Mock).mockResolvedValue(
+    (retrieveTopListeningDataAxios as unknown as import('vitest').Mock).mockResolvedValue(
       topListeningDataFixtures.getTopListeningData()
     );
 
@@ -74,7 +74,7 @@ describe('TopListeningData Component', () => {
   });
 
   test("redirects to home page on data fetch failure", async () => {
-    (retrieveTopListeningDataAxios as jest.Mock).mockResolvedValue(undefined);
+    (retrieveTopListeningDataAxios as unknown as import('vitest').Mock).mockResolvedValue(undefined);
 
     render(<TopListeningData {...defaultProps} />);
     
@@ -84,7 +84,7 @@ describe('TopListeningData Component', () => {
   });
 
   test("displays track data when successfully loaded", async () => {
-    (retrieveTopListeningDataAxios as jest.Mock).mockResolvedValue(
+    (retrieveTopListeningDataAxios as unknown as import('vitest').Mock).mockResolvedValue(
       topListeningDataFixtures.getTopListeningData()
     );
 
@@ -98,7 +98,7 @@ describe('TopListeningData Component', () => {
   });
 
   test("auto-fills playlist for newly created empty playlists", async () => {
-    (retrieveTopListeningDataAxios as jest.Mock).mockResolvedValue(
+    (retrieveTopListeningDataAxios as unknown as import('vitest').Mock).mockResolvedValue(
       topListeningDataFixtures.getTopListeningData()
     );
 
@@ -120,7 +120,7 @@ describe('TopListeningData Component', () => {
   });
 
   test("does not auto-fill non-empty playlists", async () => {
-    (retrieveTopListeningDataAxios as jest.Mock).mockResolvedValue(
+    (retrieveTopListeningDataAxios as unknown as import('vitest').Mock).mockResolvedValue(
       topListeningDataFixtures.getTopListeningData()
     );
 

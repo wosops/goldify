@@ -16,10 +16,10 @@ import {
   getSpotifyRedirectURL,
 } from '../../js/utils/GoldifySoloUtils';
 
-jest.mock('axios');
+vi.mock('axios');
 
 // Mock window.location
-const mockReplace = jest.fn();
+const mockReplace = vi.fn();
 let mockHref = '';
 
 Object.defineProperty(window, 'location', {
@@ -42,16 +42,16 @@ beforeEach(() => {
 import * as goldifySoloFixtures from '../../__fixtures__/GoldifySoloFixtures';
 
 test('Function to generate random function is random', () => {
-  let randomStr1 = generateRandomString(16);
-  let randomStr2 = generateRandomString(16);
-  let randomStr3 = generateRandomString(16);
+  const randomStr1 = generateRandomString(16);
+  const randomStr2 = generateRandomString(16);
+  const randomStr3 = generateRandomString(16);
   expect(randomStr1).not.toEqual(randomStr2);
   expect(randomStr2).not.toEqual(randomStr3);
   expect(randomStr1).not.toEqual(randomStr3);
 });
 
 test('The Spotify API scopes string includes all scopes needed for Goldify', () => {
-  let spotifyApiScope = retrieveSpotifyApiScopesNeeded();
+  const spotifyApiScope = retrieveSpotifyApiScopesNeeded();
   expect(spotifyApiScope).toContain('user-read-private');
   expect(spotifyApiScope).toContain('user-read-email');
   expect(spotifyApiScope).toContain('user-top-read');
@@ -60,7 +60,7 @@ test('The Spotify API scopes string includes all scopes needed for Goldify', () 
 });
 
 test('The Spotify API Authorization URL has correct components in it', () => {
-  let spotifyApiAuthURL = getSpotifyAuthenticationLink();
+  const spotifyApiAuthURL = getSpotifyAuthenticationLink();
   expect(spotifyApiAuthURL).toContain('https://accounts.spotify.com/authorize?');
   expect(spotifyApiAuthURL).toContain('response_type=code');
   expect(spotifyApiAuthURL).toContain('client_id=' + qs.stringify(clientId));
@@ -79,7 +79,7 @@ test('Landing page should render null authentication code', () => {
 });
 
 test('Check for to make sure retrieveTokensAxios returns correct mock data', async () => {
-  const mockAxios = axios;
+  const mockAxios = axios as unknown as import('vitest').Mock;
   mockAxios.mockResolvedValue({
     data: goldifySoloFixtures.getTokensTestData(),
   });
@@ -89,15 +89,15 @@ test('Check for to make sure retrieveTokensAxios returns correct mock data', asy
 });
 
 test('Check for to make sure retrieveTokensAxios throws error on bad data', async () => {
-  const mockAxios = axios;
+  const mockAxios = axios as unknown as import('vitest').Mock;
   mockAxios.mockResolvedValue(null);
-  console.error = jest.fn();
+  console.error = vi.fn();
   const result = await retrieveTokensAxios('test_code');
   expect(result).toEqual({ error: 'Failed to retrieve tokens' });
   expect(console.error).toHaveBeenCalledWith('Error retrieving tokens:', expect.any(TypeError));
 
   mockAxios.mockResolvedValue(undefined);
-  console.error = jest.fn();
+  console.error = vi.fn();
   const result2 = await retrieveTokensAxios('test_code');
   expect(result2).toEqual({ error: 'Failed to retrieve tokens' });
   expect(console.error).toHaveBeenCalledWith('Error retrieving tokens:', expect.any(TypeError));
@@ -110,7 +110,7 @@ test('Confirm replaceWindowURL replaces the window with the given URL', async ()
 });
 
 test('Check for Loading... in loading page', () => {
-  let loadingPageString = JSON.stringify(getLoadingPage());
+  const loadingPageString = JSON.stringify(getLoadingPage());
   expect(loadingPageString).toContain('Loading your Spotify data...');
 });
 

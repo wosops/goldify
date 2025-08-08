@@ -3,7 +3,6 @@ import '@testing-library/jest-dom';
 
 // Provide a runtime bridge so existing Jest-style tests continue to work under Vitest
 import { vi } from 'vitest';
-(globalThis as any).jest = vi;
 
 // Provide a default axios mock that matches typical usage in tests
 vi.mock('axios', () => {
@@ -19,12 +18,11 @@ vi.mock('axios', () => {
 // Silence noisy console.error logs from axios calls in tests that intentionally simulate failures
 const originalConsoleError = global.console.error;
 beforeEach(() => {
-  // Use the bridged Jest API (backed by Vitest) so existing tests don't change
-  jest.spyOn(global.console, 'error').mockImplementation((...args: unknown[]) => {
+  vi.spyOn(global.console, 'error').mockImplementation((...args: unknown[]) => {
     originalConsoleError && args.length === 0 && originalConsoleError();
   });
 });
 
 afterEach(() => {
-  (global.console.error as jest.Mock | undefined)?.mockRestore?.();
+  vi.restoreAllMocks();
 });

@@ -3,20 +3,21 @@ import axios from 'axios';
 import { retrieveUserDataAxios } from '../../../js/utils/UserInfoUtils';
 import { TokenData } from '../../../js/utils/UserInfoUtils';
 
-jest.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios> & { isAxiosError: (err: unknown) => boolean };
+vi.mock('axios');
+import type { Mocked } from 'vitest';
+const mockedAxios = axios as Mocked<typeof axios> & { isAxiosError: (err: unknown) => boolean };
 
 import * as goldifySoloFixtures from '../../../__fixtures__/GoldifySoloFixtures';
 
 // Mock console.error to avoid noise in tests
 const originalConsoleError = console.error;
 beforeEach(() => {
-  console.error = jest.fn();
+  console.error = vi.fn();
 });
 
 afterEach(() => {
   console.error = originalConsoleError;
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 test('Check for to make sure retrieveUserDataAxios throws error on bad data', async () => {

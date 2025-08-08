@@ -5,12 +5,12 @@ import UserInfo from "../../../js/solo/user-info/UserInfo";
 import * as userInfoFixtures from "../../../__fixtures__/UserInfoFixtures";
 
 // Mock the utility functions
-jest.mock("../../../js/utils/GoldifySoloUtils", () => ({
-  replaceWindowURL: jest.fn(),
+vi.mock("../../../js/utils/GoldifySoloUtils", () => ({
+  replaceWindowURL: vi.fn(),
 }));
 
 // Mock window.open for profile link tests
-const mockWindowOpen = jest.fn();
+const mockWindowOpen = vi.fn();
 Object.defineProperty(window, 'open', {
   writable: true,
   value: mockWindowOpen
@@ -18,7 +18,7 @@ Object.defineProperty(window, 'open', {
 
 describe('UserInfo Component', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test("renders empty state when no user data provided", () => {

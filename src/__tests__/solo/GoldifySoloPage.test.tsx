@@ -12,16 +12,16 @@ import { retrieveUserDataAxios } from "../../js/utils/UserInfoUtils";
 import { HOME_PAGE_PATH } from "../../js/utils/constants";
 
 vi.mock("../../js/utils/GoldifySoloUtils", () => ({
-  retrieveAuthenticationCode: jest.fn(),
-  retrieveAuthorization: jest.fn(),
-  retrieveTokensAxios: jest.fn(),
-  replaceWindowURL: jest.fn(),
-  getLoadingPage: jest.fn(),
-  clearAuthCodeFromURL: jest.fn(),
+  retrieveAuthenticationCode: vi.fn(),
+  retrieveAuthorization: vi.fn(),
+  retrieveTokensAxios: vi.fn(),
+  replaceWindowURL: vi.fn(),
+  getLoadingPage: vi.fn(),
+  clearAuthCodeFromURL: vi.fn(),
 }));
 
 vi.mock("../../js/utils/UserInfoUtils", () => ({
-  retrieveUserDataAxios: jest.fn(),
+  retrieveUserDataAxios: vi.fn(),
 }));
 
 import * as goldifySoloFixtures from "../../__fixtures__/GoldifySoloFixtures";
@@ -33,10 +33,10 @@ describe('GoldifySoloPage Component', () => {
   });
 
   test("renders loading page when authentication code is available", async () => {
-    (retrieveAuthenticationCode as jest.Mock).mockReturnValue("test-auth-code");
-    (getLoadingPage as jest.Mock).mockReturnValue(<div>Loading...</div>);
-    (retrieveTokensAxios as jest.Mock).mockResolvedValue(goldifySoloFixtures.getTokensTestData());
-    (retrieveUserDataAxios as jest.Mock).mockResolvedValue(userInfoFixtures.getUserTestData());
+    (retrieveAuthenticationCode as unknown as import('vitest').Mock).mockReturnValue("test-auth-code");
+    (getLoadingPage as unknown as import('vitest').Mock).mockReturnValue(<div>Loading...</div>);
+    (retrieveTokensAxios as unknown as import('vitest').Mock).mockResolvedValue(goldifySoloFixtures.getTokensTestData());
+    (retrieveUserDataAxios as unknown as import('vitest').Mock).mockResolvedValue(userInfoFixtures.getUserTestData());
 
     render(<GoldifySoloPage />);
 
@@ -47,8 +47,8 @@ describe('GoldifySoloPage Component', () => {
   });
 
   test("redirects to authorization when no authentication code", () => {
-    (retrieveAuthenticationCode as jest.Mock).mockReturnValue(null);
-    (getLoadingPage as jest.Mock).mockReturnValue(<div>Loading...</div>);
+    (retrieveAuthenticationCode as unknown as import('vitest').Mock).mockReturnValue(null);
+    (getLoadingPage as unknown as import('vitest').Mock).mockReturnValue(<div>Loading...</div>);
 
     render(<GoldifySoloPage />);
     
@@ -56,9 +56,9 @@ describe('GoldifySoloPage Component', () => {
   });
 
   test("redirects to home page on token retrieval failure", async () => {
-    (retrieveAuthenticationCode as jest.Mock).mockReturnValue("test-auth-code");
-    (getLoadingPage as jest.Mock).mockReturnValue(<div>Loading...</div>);
-    (retrieveTokensAxios as jest.Mock).mockResolvedValue(undefined);
+    (retrieveAuthenticationCode as unknown as import('vitest').Mock).mockReturnValue("test-auth-code");
+    (getLoadingPage as unknown as import('vitest').Mock).mockReturnValue(<div>Loading...</div>);
+    (retrieveTokensAxios as unknown as import('vitest').Mock).mockResolvedValue(undefined);
 
     render(<GoldifySoloPage />);
     
@@ -68,10 +68,10 @@ describe('GoldifySoloPage Component', () => {
   });
 
   test("redirects to home page on user data retrieval failure", async () => {
-    (retrieveAuthenticationCode as jest.Mock).mockReturnValue("test-auth-code");
-    (getLoadingPage as jest.Mock).mockReturnValue(<div>Loading...</div>);
-    (retrieveTokensAxios as jest.Mock).mockResolvedValue(goldifySoloFixtures.getTokensTestData());
-    (retrieveUserDataAxios as jest.Mock).mockResolvedValue(undefined);
+    (retrieveAuthenticationCode as unknown as import('vitest').Mock).mockReturnValue("test-auth-code");
+    (getLoadingPage as unknown as import('vitest').Mock).mockReturnValue(<div>Loading...</div>);
+    (retrieveTokensAxios as unknown as import('vitest').Mock).mockResolvedValue(goldifySoloFixtures.getTokensTestData());
+    (retrieveUserDataAxios as unknown as import('vitest').Mock).mockResolvedValue(undefined);
 
     render(<GoldifySoloPage />);
     
@@ -81,10 +81,10 @@ describe('GoldifySoloPage Component', () => {
   });
 
   test("renders main content when data is loaded successfully", async () => {
-    (retrieveAuthenticationCode as jest.Mock).mockReturnValue("test-auth-code");
-    (getLoadingPage as jest.Mock).mockReturnValue(<div>Loading...</div>);
-    (retrieveTokensAxios as jest.Mock).mockResolvedValue(goldifySoloFixtures.getTokensTestData());
-    (retrieveUserDataAxios as jest.Mock).mockResolvedValue(userInfoFixtures.getUserTestData());
+    (retrieveAuthenticationCode as unknown as import('vitest').Mock).mockReturnValue("test-auth-code");
+    (getLoadingPage as unknown as import('vitest').Mock).mockReturnValue(<div>Loading...</div>);
+    (retrieveTokensAxios as unknown as import('vitest').Mock).mockResolvedValue(goldifySoloFixtures.getTokensTestData());
+    (retrieveUserDataAxios as unknown as import('vitest').Mock).mockResolvedValue(userInfoFixtures.getUserTestData());
 
     render(<GoldifySoloPage />);
     

@@ -5,20 +5,20 @@ import GoldifyCreatePlaylist from "../../../js/solo/goldify-playlist/GoldifyCrea
 import * as userInfoFixtures from "../../../__fixtures__/UserInfoFixtures";
 
 // Mock the utility functions
-jest.mock("../../../js/utils/GoldifySoloUtils", () => ({
-  replaceWindowURL: jest.fn(),
+vi.mock("../../../js/utils/GoldifySoloUtils", () => ({
+  replaceWindowURL: vi.fn(),
 }));
 
-jest.mock("../../../js/utils/playlist", () => ({
-  createGoldifyPlaylist: jest.fn(),
-  uploadPlaylistImage: jest.fn(),
+vi.mock("../../../js/utils/playlist", () => ({
+  createGoldifyPlaylist: vi.fn(),
+  uploadPlaylistImage: vi.fn(),
 }));
 
 describe('GoldifyCreatePlaylist Component', () => {
-  const mockPlaylistUpdater = jest.fn();
+  const mockPlaylistUpdater = vi.fn();
   
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test("renders create playlist component with heading", () => {

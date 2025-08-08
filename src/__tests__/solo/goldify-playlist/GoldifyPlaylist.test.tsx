@@ -4,19 +4,19 @@ import "@testing-library/jest-dom";
 import GoldifyPlaylist from "../../../js/solo/goldify-playlist/GoldifyPlaylist";
 
 // Mock the utility functions
-jest.mock("../../../js/utils/GoldifySoloUtils", () => ({
-  replaceWindowURL: jest.fn(),
+vi.mock("../../../js/utils/GoldifySoloUtils", () => ({
+  replaceWindowURL: vi.fn(),
 }));
 
-jest.mock("../../../js/utils/playlist", () => ({
-  findExistingGoldifyPlaylistByName: jest.fn(),
+vi.mock("../../../js/utils/playlist", () => ({
+  findExistingGoldifyPlaylistByName: vi.fn(),
 }));
 
 describe('GoldifyPlaylist Component', () => {
-  const mockAutoFillCompletedHandler = jest.fn();
+  const mockAutoFillCompletedHandler = vi.fn();
   
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test("renders playlist component without crashing", () => {

@@ -22,7 +22,7 @@ test('Goldify App renders without crashing', () => {
 });
 
 test('Run Web Vitals', () => {
-  const mockCallback = jest.fn();
+  const mockCallback = vi.fn();
   reportWebVitals(mockCallback);
   
   // Test with console.log
@@ -34,6 +34,6 @@ test('Load index script file without error', async () => {
   root.id = 'root';
   document.body.appendChild(root);
   await act(async () => {
-    await import('../index.tsx');
+    await import('../index');
   });
 });

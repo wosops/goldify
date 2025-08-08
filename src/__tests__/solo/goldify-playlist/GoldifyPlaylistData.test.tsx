@@ -7,17 +7,17 @@ import { getPlaylistTracksById } from "../../../js/utils/playlistTracks";
 
 // Mock the utility functions
 vi.mock("../../../js/utils/GoldifySoloUtils", () => ({
-  replaceWindowURL: jest.fn(),
-  getSpotifyRedirectURL: jest.fn(),
+  replaceWindowURL: vi.fn(),
+  getSpotifyRedirectURL: vi.fn(),
 }));
 
 vi.mock("../../../js/utils/playlistTracks", () => ({
-  getPlaylistTracksById: jest.fn(),
-  replacePlaylistTracks: jest.fn(),
+  getPlaylistTracksById: vi.fn(),
+  replacePlaylistTracks: vi.fn(),
 }));
 
 describe('GoldifyPlaylistData Component', () => {
-  const mockAutoFillCompletedHandler = jest.fn();
+  const mockAutoFillCompletedHandler = vi.fn();
   
   beforeEach(() => {
     vi.clearAllMocks();
@@ -36,7 +36,7 @@ describe('GoldifyPlaylistData Component', () => {
   });
 
   test("renders playlist header after data loads", async () => {
-    (getPlaylistTracksById as jest.Mock).mockResolvedValue({
+    (getPlaylistTracksById as unknown as import('vitest').Mock).mockResolvedValue({
       href: '',
       items: [
         {
