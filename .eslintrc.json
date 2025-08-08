@@ -1,7 +1,17 @@
 {
   "extends": [
-    "react-app",
-    "react-app/jest"
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "react",
+    "react-hooks",
+    "@typescript-eslint",
+    "prettier"
   ],
   "parserOptions": {
     "ecmaVersion": 2022,

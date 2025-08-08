@@ -12,7 +12,10 @@ const AllTheProviders: React.FC<AllTheProvidersProps> = ({
   initialEntries = ['/'] 
 }) => {
   return (
-    <MemoryRouter initialEntries={initialEntries}>
+    <MemoryRouter
+      initialEntries={initialEntries}
+      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+    >
       {children}
     </MemoryRouter>
   );

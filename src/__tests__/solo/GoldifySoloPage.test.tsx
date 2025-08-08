@@ -17,6 +17,7 @@ jest.mock("../../js/utils/GoldifySoloUtils", () => ({
   retrieveTokensAxios: jest.fn(),
   replaceWindowURL: jest.fn(),
   getLoadingPage: jest.fn(),
+  clearAuthCodeFromURL: jest.fn(),
 }));
 
 jest.mock("../../js/utils/UserInfoUtils", () => ({
@@ -38,9 +39,11 @@ describe('GoldifySoloPage Component', () => {
     (retrieveUserDataAxios as jest.Mock).mockResolvedValue(userInfoFixtures.getUserTestData());
 
     render(<GoldifySoloPage />);
-    
+
     expect(retrieveAuthenticationCode).toHaveBeenCalled();
-    expect(retrieveTokensAxios).toHaveBeenCalledWith("test-auth-code");
+    await waitFor(() => {
+      expect(retrieveTokensAxios).toHaveBeenCalledWith("test-auth-code");
+    });
   });
 
   test("redirects to authorization when no authentication code", () => {

@@ -50,19 +50,10 @@ export interface TokenData {
  * @returns Promise resolving to user profile data
  */
 export const retrieveUserDataAxios = async (tokenData: TokenData): Promise<SpotifyUser> => {
-  console.log('=== /me API Call Debug ===');
-  console.log('Token data:', {
-    access_token: tokenData.access_token ? `${tokenData.access_token.substring(0, 20)}...` : 'MISSING',
-    token_type: tokenData.token_type,
-    scope: tokenData.scope || 'SCOPE NOT INCLUDED IN TOKEN RESPONSE'
-  });
-  
   const headers = basicHeaders(tokenData);
-  console.log('Request headers:', headers);
 
   try {
     const response = await axios.get('https://api.spotify.com/v1/me', headers);
-    console.log('✅ /me API call successful');
     return response.data;
   } catch (error) {
     console.error('❌ /me API call failed:', error);

@@ -60,12 +60,13 @@ describe('TopListeningData Component', () => {
     );
 
     render(<TopListeningData {...defaultProps} />);
-    
-    await waitFor(() => {
-      expect(retrieveTopListeningDataAxios).toHaveBeenCalledWith(
-        goldifySoloFixtures.getTokensTestData()
-      );
-    });
+
+    // Wait for UI to reflect loaded state
+    await screen.findByRole('heading', { name: 'Your Top Hits' });
+
+    expect(retrieveTopListeningDataAxios).toHaveBeenCalledWith(
+      goldifySoloFixtures.getTokensTestData()
+    );
   });
 
   test("redirects to home page on data fetch failure", async () => {
@@ -84,12 +85,10 @@ describe('TopListeningData Component', () => {
     );
 
     render(<TopListeningData {...defaultProps} />);
-    
-    // Wait for data to load and component to render the "Your Top Hits" heading
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { name: 'Your Top Hits' })).toBeInTheDocument();
-    });
-    
+
+    // Wait for data to load and component to render
+    await screen.findByRole('heading', { name: 'Your Top Hits' });
+
     // Should also have the time range selector
     expect(screen.getByLabelText('Time Range')).toBeInTheDocument();
   });
@@ -106,11 +105,14 @@ describe('TopListeningData Component', () => {
         goldifyUriList={[]}
       />
     );
-    
+
+    // Ensure UI loaded first
+    await screen.findByRole('heading', { name: 'Your Top Hits' });
+
     // Wait for auto-fill to complete
     await waitFor(() => {
       expect(mockAddTrackHandler).toHaveBeenCalled();
-    }, { timeout: 3000 });
+    });
   });
 
   test("does not auto-fill non-empty playlists", async () => {
@@ -125,9 +127,13 @@ describe('TopListeningData Component', () => {
         goldifyUriList={["spotify:track:existing"]}
       />
     );
-    
-    // Wait a bit to ensure no auto-fill happens
-    await new Promise(resolve => setTimeout(resolve, 100));
-    expect(mockAddTrackHandler).not.toHaveBeenCalled();
+
+    // Ensure UI loaded first
+    await screen.findByRole('heading', { name: 'Your Top Hits' });
+
+    // Ensure no auto-fill happens
+    await waitFor(() => {
+      expect(mockAddTrackHandler).not.toHaveBeenCalled();
+    });
   });
 }); 

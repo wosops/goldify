@@ -1,11 +1,12 @@
 import React from 'react';
+import { env } from './env';
 import axios from 'axios';
 import qs from 'qs';
 import { spotifyWebPlayerDomain } from './constants';
 
-export const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID as string;
-export const clientSecret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET as string;
-export const redirectUri = process.env.REACT_APP_SPOTIFY_REDIRECT_URI as string;
+export const clientId = env.VITE_SPOTIFY_CLIENT_ID as string;
+export const clientSecret = env.VITE_SPOTIFY_CLIENT_SECRET as string;
+export const redirectUri = env.VITE_SPOTIFY_REDIRECT_URI as string;
 
 interface TokenResponse {
   access_token: string;

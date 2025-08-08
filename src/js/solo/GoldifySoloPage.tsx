@@ -26,7 +26,6 @@ const GoldifySoloPage: React.FC = () => {
   useEffect(() => {
     // Prevent multiple auth attempts
     if (isProcessingAuth.current) {
-      console.log('Auth already in progress, skipping...');
       return;
     }
     
@@ -34,7 +33,6 @@ const GoldifySoloPage: React.FC = () => {
     if (code === undefined || code === null) {
       retrieveAuthorization();
     } else {
-      console.log('Starting auth process with code:', code.substring(0, 10) + '...');
       isProcessingAuth.current = true;
       retrieveDataOnPageLoad(code);
     }
@@ -46,17 +44,14 @@ const GoldifySoloPage: React.FC = () => {
    */
   const retrieveDataOnPageLoad = async (code: string): Promise<void> => {
     try {
-      console.log('Exchanging code for token...');
       const tokenData = await retrieveTokensAxios(code);
       
       if (tokenData === undefined || tokenData.error) {
-        console.log('Token exchange failed');
         isProcessingAuth.current = false;
         replaceWindowURL(HOME_PAGE_PATH);
         return;
       }
       
-      console.log('Token exchange successful, clearing code from URL');
       clearAuthCodeFromURL(); // Clear the code immediately after successful exchange
       setRetrievedTokenData(tokenData);
       

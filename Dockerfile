@@ -2,10 +2,13 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-COPY package.json /app
+COPY package*.json /app/
 
-RUN yarn install && yarn cache clean
+RUN npm ci --no-audit --no-fund --legacy-peer-deps
 
 COPY . /app
 
-CMD ["yarn", "run", "build"]
+RUN npm run build
+
+# Default runtime serves the static build (Vite outputs to dist)
+CMD ["npx", "serve", "-s", "dist"]

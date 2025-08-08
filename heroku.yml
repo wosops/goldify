@@ -2,4 +2,4 @@ build:
   docker:
     web: Dockerfile
 run:
-  web: yarn global add serve; serve -s build
+  web: npm i -g serve; serve -s dist

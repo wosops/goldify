@@ -23,28 +23,38 @@
     "web-vitals": "^3.5.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --coverage --watchAll=false --testMatch=\"**/__tests__/**/*.(test|spec).(js|jsx|ts|tsx)\"",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "jest --coverage",
     "lint": "eslint src --ext .ts,.tsx --ignore-pattern '**/__tests__/**' --ignore-pattern '**/__fixtures__/**' --ignore-pattern '**/*.test.*'",
     "lint:fix": "eslint src --ext .ts,.tsx --ignore-pattern '**/__tests__/**' --ignore-pattern '**/__fixtures__/**' --ignore-pattern '**/*.test.*' --fix",
     "type-check": "tsc --noEmit"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "jest": {
-    "transformIgnorePatterns": [
-      "node_modules/(?!(axios)/)"
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:react-hooks/recommended",
+      "plugin:@typescript-eslint/recommended",
+      "prettier"
     ],
-    "moduleNameMapper": {
-      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
-    }
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "react",
+      "react-hooks",
+      "prettier"
+    ],
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module",
+      "ecmaFeatures": { "jsx": true }
+    },
+    "settings": { "react": { "version": "detect" } }
   },
+  
   "browserslist": {
     "production": [
       ">0.2%",
@@ -59,6 +69,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@types/jest": "^29.5.0",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^16.3.0",
@@ -67,15 +78,21 @@
     "@types/react-dom": "^18.3.7",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
+    "@vitejs/plugin-react-swc": "^3.7.0",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.33.0",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "prettier": "^3.1.0",
-    "react-scripts": "^5.0.1"
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "vite": "^5.4.0"
   },
   "engines": {
-    "node": ">=18.0.0",
-    "yarn": "1.22.19"
+    "node": ">=18.0.0"
   }
 }
