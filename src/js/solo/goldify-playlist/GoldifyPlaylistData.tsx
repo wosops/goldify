@@ -117,6 +117,7 @@ const GoldifyPlaylistData: React.FC<GoldifyPlaylistDataProps> = ({
 
         // Remove item
         const removedItem = prev[index];
+        if (!removedItem) return prev;
         const next = [...prev.slice(0, index), ...prev.slice(index + 1)];
 
         // Track removed items if they were in the saved playlist
