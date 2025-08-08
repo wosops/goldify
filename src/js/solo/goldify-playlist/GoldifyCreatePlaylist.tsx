@@ -17,11 +17,9 @@ const GoldifyCreatePlaylist: React.FC<GoldifyCreatePlaylistProps> = ({
     <div>
       <h2>Create Goldify Playlist</h2>
       <p>This component will create a new Goldify playlist...</p>
-      {userData && (
-        <p>Creating playlist for {userData.display_name}</p>
-      )}
+      {userData && <p>Creating playlist for {userData.display_name}</p>}
     </div>
   );
 };
 
-export default GoldifyCreatePlaylist; 
+export default GoldifyCreatePlaylist;

@@ -1,17 +1,13 @@
 // These globals are injected at build time by Vite (see vite.config.ts -> define)
 // They serve as a fallback when import.meta.env is not directly available (e.g., certain test environments)
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare const __VITE_SPOTIFY_CLIENT_ID__: string | undefined;
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare const __VITE_SPOTIFY_CLIENT_SECRET__: string | undefined;
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare const __VITE_SPOTIFY_REDIRECT_URI__: string | undefined;
 
 // Safely access import.meta.env via an indirect eval to avoid parser/runtime issues in Jest/Node
 const importMetaEnv = (() => {
   try {
     // Avoid direct syntax that mentions import.meta so Jest/CommonJS can parse this file
-    // eslint-disable-next-line @typescript-eslint/no-implied-eval, no-new-func
     return new Function(
       'return (typeof import !== "undefined" && typeof import.meta !== "undefined" && import.meta.env) ? import.meta.env : undefined;'
     )();
@@ -44,14 +40,16 @@ export const env = {
     nodeProcessEnv?.REACT_APP_SPOTIFY_CLIENT_ID,
   VITE_SPOTIFY_CLIENT_SECRET:
     importMetaEnv?.VITE_SPOTIFY_CLIENT_SECRET ||
-    (typeof __VITE_SPOTIFY_CLIENT_SECRET__ !== 'undefined' ? __VITE_SPOTIFY_CLIENT_SECRET__ : undefined) ||
+    (typeof __VITE_SPOTIFY_CLIENT_SECRET__ !== 'undefined'
+      ? __VITE_SPOTIFY_CLIENT_SECRET__
+      : undefined) ||
     nodeProcessEnv?.VITE_SPOTIFY_CLIENT_SECRET ||
     nodeProcessEnv?.REACT_APP_SPOTIFY_CLIENT_SECRET,
   VITE_SPOTIFY_REDIRECT_URI:
     importMetaEnv?.VITE_SPOTIFY_REDIRECT_URI ||
-    (typeof __VITE_SPOTIFY_REDIRECT_URI__ !== 'undefined' ? __VITE_SPOTIFY_REDIRECT_URI__ : undefined) ||
+    (typeof __VITE_SPOTIFY_REDIRECT_URI__ !== 'undefined'
+      ? __VITE_SPOTIFY_REDIRECT_URI__
+      : undefined) ||
     nodeProcessEnv?.VITE_SPOTIFY_REDIRECT_URI ||
     nodeProcessEnv?.REACT_APP_SPOTIFY_REDIRECT_URI,
 } as const;
-
-

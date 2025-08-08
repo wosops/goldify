@@ -78,4 +78,4 @@ const UserInfo: React.FC<UserInfoProps> = ({ userData }) => {
   }
 };
 
-export default UserInfo; 
+export default UserInfo;

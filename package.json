@@ -28,33 +28,10 @@
     "preview": "vite preview",
     "test": "vitest run --coverage",
     "test:watch": "vitest",
-    "lint": "eslint src --ext .ts,.tsx --ignore-pattern '**/__tests__/**' --ignore-pattern '**/__fixtures__/**' --ignore-pattern '**/*.test.*'",
-    "lint:fix": "eslint src --ext .ts,.tsx --ignore-pattern '**/__tests__/**' --ignore-pattern '**/__fixtures__/**' --ignore-pattern '**/*.test.*' --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "type-check": "tsc --noEmit"
   },
-  "eslintConfig": {
-    "extends": [
-      "eslint:recommended",
-      "plugin:react/recommended",
-      "plugin:react-hooks/recommended",
-      "plugin:@typescript-eslint/recommended",
-      "prettier"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint",
-      "react",
-      "react-hooks",
-      "prettier"
-    ],
-    "parserOptions": {
-      "ecmaVersion": "latest",
-      "sourceType": "module",
-      "ecmaFeatures": { "jsx": true }
-    },
-    "settings": { "react": { "version": "detect" } }
-  },
-  
   "browserslist": {
     "production": [
       ">0.2%",
@@ -74,20 +51,18 @@
     "@testing-library/user-event": "^14.6.1",
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-react-swc": "^3.11.0",
+    "@vitest/coverage-v8": "^3.2.4",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.2",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react": "^7.33.0",
     "eslint-plugin-react-hooks": "^4.6.2",
-    "@vitest/coverage-v8": "^2.1.9",
     "jsdom": "^25.0.1",
-    "vitest": "^2.1.9",
     "prettier": "^3.1.0",
     "ts-node": "^10.9.2",
-    "vite": "^5.4.19"
+    "vite": "^7.1.1",
+    "vitest": "^3.2.4"
   },
   "engines": {
     "node": ">=18.0.0"

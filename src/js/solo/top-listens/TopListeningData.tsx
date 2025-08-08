@@ -1,19 +1,13 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { 
-  FormControl, 
-  InputLabel, 
-  MenuItem, 
-  Select, 
-  SelectChangeEvent 
-} from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { blue, green } from '@mui/material/colors';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import BeenhereIcon from '@mui/icons-material/Beenhere';
 import '../../../css/TrackDataTable.css';
-import { 
-  retrieveTopListeningDataAxios, 
-  SpotifyTopTracksResponse, 
-  SpotifyTrack
+import {
+  retrieveTopListeningDataAxios,
+  SpotifyTopTracksResponse,
+  SpotifyTrack,
 } from '../../utils/TopListeningDataUtils';
 import { replaceWindowURL, getSpotifyRedirectURL } from '../../utils/GoldifySoloUtils';
 import {
@@ -49,10 +43,13 @@ const TopListeningData: React.FC<TopListeningDataProps> = ({
 }) => {
   const [selectedTerm, setSelectedTerm] = useState<number>(0);
   const [topListeningData, setTopListeningData] = useState<SpotifyTopTracksResponse | null>(null);
-  const [shortTermListeningData, setShortTermListeningData] = useState<SpotifyTopTracksResponse | null>(null);
-  const [mediumTermListeningData, setMediumTermListeningData] = useState<SpotifyTopTracksResponse | null>(null);
-  const [longTermListeningData, setLongTermListeningData] = useState<SpotifyTopTracksResponse | null>(null);
-  
+  const [shortTermListeningData, setShortTermListeningData] =
+    useState<SpotifyTopTracksResponse | null>(null);
+  const [mediumTermListeningData, setMediumTermListeningData] =
+    useState<SpotifyTopTracksResponse | null>(null);
+  const [longTermListeningData, setLongTermListeningData] =
+    useState<SpotifyTopTracksResponse | null>(null);
+
   const hasAutoFilledRef = useRef<boolean>(false);
 
   /**
@@ -86,7 +83,13 @@ const TopListeningData: React.FC<TopListeningDataProps> = ({
     }
 
     onAutoFillCompleteHandler();
-  }, [shortTermListeningData, mediumTermListeningData, longTermListeningData, addTrackHandler, onAutoFillCompleteHandler]);
+  }, [
+    shortTermListeningData,
+    mediumTermListeningData,
+    longTermListeningData,
+    addTrackHandler,
+    onAutoFillCompleteHandler,
+  ]);
 
   /**
    * Retrieves the user's top listening data once retrievedTokenData is available
@@ -113,7 +116,14 @@ const TopListeningData: React.FC<TopListeningDataProps> = ({
       hasAutoFilledRef.current = true;
       autoFillGoldifyPlaylist();
     }
-  }, [goldifyUriList, newlyCreatedPlaylist, shortTermListeningData, mediumTermListeningData, longTermListeningData, autoFillGoldifyPlaylist]);
+  }, [
+    goldifyUriList,
+    newlyCreatedPlaylist,
+    shortTermListeningData,
+    mediumTermListeningData,
+    longTermListeningData,
+    autoFillGoldifyPlaylist,
+  ]);
 
   /**
    * Will retrieve the user's top listening data and which data is visible
@@ -123,7 +133,7 @@ const TopListeningData: React.FC<TopListeningDataProps> = ({
   const retrieveTopListeningData = async (retrievedTokenData: TokenData): Promise<void> => {
     try {
       const data = await retrieveTopListeningDataAxios(retrievedTokenData);
-      
+
       if (data === undefined) {
         replaceWindowURL(HOME_PAGE_PATH);
       } else {
@@ -174,12 +184,13 @@ const TopListeningData: React.FC<TopListeningDataProps> = ({
     setTopListeningData(newListeningData);
   };
 
-
-
   /**
    * Renders a single track item row
    */
-  const getTopListeningDataItemDiv = (listValue: SpotifyTrack, index: number): React.ReactElement => {
+  const getTopListeningDataItemDiv = (
+    listValue: SpotifyTrack,
+    index: number
+  ): React.ReactElement => {
     return (
       <tr key={index} className="track-data-tr">
         <td className="track-data-td track-data-action-icon">
@@ -202,35 +213,24 @@ const TopListeningData: React.FC<TopListeningDataProps> = ({
             target="_blank"
             rel="noreferrer"
           >
-            <img
-              alt={listValue.album.name}
-              src={listValue.album.images[0]?.url}
-            />
+            <img alt={listValue.album.name} src={listValue.album.images[0]?.url} />
           </a>
         </td>
         <td className="track-data-td">
-          <a
-            href={getSpotifyRedirectURL('track', listValue.id)}
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href={getSpotifyRedirectURL('track', listValue.id)} target="_blank" rel="noreferrer">
             {listValue.name}
           </a>
         </td>
-                 <td className="track-data-td">
-           {listValue.album.artists.map((artist, artistIndex) => (
-             <React.Fragment key={artist.id}>
-               {artistIndex > 0 && ', '}
-               <a
-                 href={getSpotifyRedirectURL('artist', artist.id)}
-                 target="_blank"
-                 rel="noreferrer"
-               >
-                 {artist.name}
-               </a>
-             </React.Fragment>
-           ))}
-         </td>
+        <td className="track-data-td">
+          {listValue.album.artists.map((artist, artistIndex) => (
+            <React.Fragment key={artist.id}>
+              {artistIndex > 0 && ', '}
+              <a href={getSpotifyRedirectURL('artist', artist.id)} target="_blank" rel="noreferrer">
+                {artist.name}
+              </a>
+            </React.Fragment>
+          ))}
+        </td>
       </tr>
     );
   };
@@ -299,4 +299,4 @@ const TopListeningData: React.FC<TopListeningDataProps> = ({
   }
 };
 
-export default TopListeningData; 
+export default TopListeningData;

@@ -18,37 +18,22 @@ const GoldifyLandingPage: React.FC = () => {
           Welcome to Goldify!
         </Typography>
         <div className="landing-logo-container">
-          <img
-            className="landing-goldify-logo"
-            src={goldifyLogo}
-            alt="Goldify Logo"
-          />
-          X
+          <img className="landing-goldify-logo" src={goldifyLogo} alt="Goldify Logo" />X
           <a href={spotifyHomePageUrl} target="_blank" rel="noreferrer">
-            <img
-              className="landing-spotify-logo"
-              src={spotifyLogo}
-              alt="Spotify Logo"
-            />
+            <img className="landing-spotify-logo" src={spotifyLogo} alt="Spotify Logo" />
           </a>
         </div>
         <Typography variant="body1" className="landing-body">
-          Goldify is an application built to help you easily design your
-          golden Spotify playlist. Built using Spotify&apos;s APIs, we provide
-          you with an easy-to-use interface which presents you with all your
-          top hits to build your personal playlist from. Within minutes, you
-          will have a Spotify playlist that is molded exactly to your musical
-          taste. We&apos;re excited for you to be here and can&apos;t wait for
-          you to enjoy your golden tracks!
+          Goldify is an application built to help you easily design your golden Spotify playlist.
+          Built using Spotify&apos;s APIs, we provide you with an easy-to-use interface which
+          presents you with all your top hits to build your personal playlist from. Within minutes,
+          you will have a Spotify playlist that is molded exactly to your musical taste. We&apos;re
+          excited for you to be here and can&apos;t wait for you to enjoy your golden tracks!
         </Typography>
         <div className="follow-github-container">
           <a href={goldifyGitHubUrl} target="_blank" rel="noreferrer">
             <div className="follow-github-inner">
-              <img
-                className="follow-github-icon"
-                src={githubLogo}
-                alt="Github Logo Icon"
-              />
+              <img className="follow-github-icon" src={githubLogo} alt="Github Logo Icon" />
               <div className="follow-github-message">Follow on GitHub</div>
             </div>
           </a>
@@ -83,9 +68,8 @@ const GoldifyLandingPage: React.FC = () => {
             How do I get started?
           </Typography>
           <Typography variant="body1">
-            Great question! At the top of this page, you will see the tab
-            named &quot;Solo&quot;. Upon clicking this, you&apos;ll be on your
-            way to building musical magic!
+            Great question! At the top of this page, you will see the tab named &quot;Solo&quot;.
+            Upon clicking this, you&apos;ll be on your way to building musical magic!
           </Typography>
         </div>
         <div className="landing-split-body">
@@ -93,9 +77,9 @@ const GoldifyLandingPage: React.FC = () => {
             Is there a limit to how often I can use Goldify Solo?
           </Typography>
           <Typography variant="body1">
-            Not at all! Stop on by anytime you like, we love the company. In
-            fact, we encourage you come back at least once a month to build on
-            top of your already amazing Goldify playlist.
+            Not at all! Stop on by anytime you like, we love the company. In fact, we encourage you
+            come back at least once a month to build on top of your already amazing Goldify
+            playlist.
           </Typography>
         </div>
         <div className="landing-split-body">
@@ -103,8 +87,8 @@ const GoldifyLandingPage: React.FC = () => {
             Does Goldify store any of my data?
           </Typography>
           <Typography variant="body1">
-            Goldify does not store or retain any data. Our website only runs
-            client side, and does not save your Spotify data to any server.
+            Goldify does not store or retain any data. Our website only runs client side, and does
+            not save your Spotify data to any server.
           </Typography>
         </div>
         <div className="landing-split-body">
@@ -112,10 +96,9 @@ const GoldifyLandingPage: React.FC = () => {
             How does Goldify access my Spotify account?
           </Typography>
           <Typography variant="body1">
-            All external requests are made directly with Spotify&apos;s API.
-            With your permission, we retrieve your listening data and use that
-            to generate a playlist for your account. We also present you with
-            a variety of your favorite tracks to personalize this playlist.
+            All external requests are made directly with Spotify&apos;s API. With your permission,
+            we retrieve your listening data and use that to generate a playlist for your account. We
+            also present you with a variety of your favorite tracks to personalize this playlist.
           </Typography>
         </div>
         <div className="landing-split-body">
@@ -123,12 +106,10 @@ const GoldifyLandingPage: React.FC = () => {
             Can I come back later to update the playlist?
           </Typography>
           <Typography variant="body1">
-            Of course! If you have visited this page before and created your
-            masterpiece of a playlist, just simply click the &quot;Solo&quot;
-            tab above and you&apos;ll be presented with your latest Top Hits
-            as well as your current Goldify playlist! Plus, you&apos;ll get to
-            see all the updates to the application by the Goldify team. Pretty
-            neat!
+            Of course! If you have visited this page before and created your masterpiece of a
+            playlist, just simply click the &quot;Solo&quot; tab above and you&apos;ll be presented
+            with your latest Top Hits as well as your current Goldify playlist! Plus, you&apos;ll
+            get to see all the updates to the application by the Goldify team. Pretty neat!
           </Typography>
         </div>
         <div className="landing-split-body">
@@ -136,13 +117,11 @@ const GoldifyLandingPage: React.FC = () => {
             Can I modify the Goldify Playlist after it&apos;s created?
           </Typography>
           <Typography variant="body1">
-            The only detail about the Goldify playlist that needs to be
-            maintained is the title (&quot;Goldify&quot;). So long as this is
-            the name of your playlist, you can go wild with the description,
-            cover image, and even contents of the playlist! You could even
-            make the cover image a picture of a pizza, and make the
-            description &quot;Wow, I really love pizza, and I really love
-            music!&quot;, and we would respect and adore you for that.
+            The only detail about the Goldify playlist that needs to be maintained is the title
+            (&quot;Goldify&quot;). So long as this is the name of your playlist, you can go wild
+            with the description, cover image, and even contents of the playlist! You could even
+            make the cover image a picture of a pizza, and make the description &quot;Wow, I really
+            love pizza, and I really love music!&quot;, and we would respect and adore you for that.
           </Typography>
         </div>
       </div>
@@ -150,4 +129,4 @@ const GoldifyLandingPage: React.FC = () => {
   );
 };
 
-export default GoldifyLandingPage; 
+export default GoldifyLandingPage;

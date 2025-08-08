@@ -57,7 +57,7 @@ export const retrieveUserDataAxios = async (tokenData: TokenData): Promise<Spoti
     return response.data;
   } catch (error) {
     console.error('❌ /me API call failed:', error);
-    
+
     // Type guard for axios errors
     if (axios.isAxiosError(error)) {
       console.error('Error status:', error.response?.status);
@@ -66,7 +66,7 @@ export const retrieveUserDataAxios = async (tokenData: TokenData): Promise<Spoti
     } else {
       console.error('Non-axios error:', error);
     }
-    
+
     return { error: 'Failed to retrieve user data' } as SpotifyUser;
   }
-}; 
+};

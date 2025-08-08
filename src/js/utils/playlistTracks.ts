@@ -103,8 +103,8 @@ export const replacePlaylistTracks = async (
  * @returns The list of track uris
  */
 export const getURIsFromList = (trackList: SpotifyPlaylistTrackItem[]): string[] => {
-  return trackList.map((trackItem) => {
+  return trackList.map(trackItem => {
     // a playlist track object has a track object within
     return trackItem.track.uri;
   });
-}; 
+};

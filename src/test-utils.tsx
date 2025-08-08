@@ -7,10 +7,7 @@ interface AllTheProvidersProps {
   initialEntries?: string[];
 }
 
-const AllTheProviders: React.FC<AllTheProvidersProps> = ({ 
-  children, 
-  initialEntries = ['/'] 
-}) => {
+const AllTheProviders: React.FC<AllTheProvidersProps> = ({ children, initialEntries = ['/'] }) => {
   return (
     <MemoryRouter
       initialEntries={initialEntries}
@@ -26,12 +23,12 @@ const customRender = (
   options?: Omit<RenderOptions, 'wrapper'> & { initialEntries?: string[] }
 ) => {
   const { initialEntries, ...renderOptions } = options || {};
-  
+
   return render(ui, {
-    wrapper: (props) => <AllTheProviders {...props} initialEntries={initialEntries} />,
+    wrapper: props => <AllTheProviders {...props} initialEntries={initialEntries} />,
     ...renderOptions,
   });
 };
 
 export * from '@testing-library/react';
-export { customRender as render }; 
+export { customRender as render };

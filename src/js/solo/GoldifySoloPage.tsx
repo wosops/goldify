@@ -28,7 +28,7 @@ const GoldifySoloPage: React.FC = () => {
     if (isProcessingAuth.current) {
       return;
     }
-    
+
     const code = retrieveAuthenticationCode();
     if (code === undefined || code === null) {
       retrieveAuthorization();
@@ -45,16 +45,16 @@ const GoldifySoloPage: React.FC = () => {
   const retrieveDataOnPageLoad = async (code: string): Promise<void> => {
     try {
       const tokenData = await retrieveTokensAxios(code);
-      
+
       if (tokenData === undefined || tokenData.error) {
         isProcessingAuth.current = false;
         replaceWindowURL(HOME_PAGE_PATH);
         return;
       }
-      
+
       clearAuthCodeFromURL(); // Clear the code immediately after successful exchange
       setRetrievedTokenData(tokenData);
-      
+
       if (tokenData) {
         const userDataResponse = await retrieveUserDataAxios(tokenData);
         if (userDataResponse === undefined || userDataResponse.error) {
@@ -76,10 +76,7 @@ const GoldifySoloPage: React.FC = () => {
     setNotificationOpen(true);
   };
 
-  const handleCloseNotification = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ): void => {
+  const handleCloseNotification = (event?: React.SyntheticEvent | Event, reason?: string): void => {
     if (reason !== 'clickaway') {
       setNotificationOpen(false);
     }
@@ -99,12 +96,7 @@ const GoldifySoloPage: React.FC = () => {
           onClose={handleCloseNotification}
           className="notification-snack-bar"
         >
-          <Alert
-            onClose={handleCloseNotification}
-            severity="info"
-            elevation={6}
-            variant="filled"
-          >
+          <Alert onClose={handleCloseNotification} severity="info" elevation={6} variant="filled">
             We&apos;ve added a few of your top hits to your new&nbsp;
             {GOLDIFY_PLAYLIST_NAME} playlist!
           </Alert>
@@ -131,4 +123,4 @@ const GoldifySoloPage: React.FC = () => {
   }
 };
 
-export default GoldifySoloPage; 
+export default GoldifySoloPage;

@@ -6,6 +6,7 @@ import { vi } from 'vitest';
 
 // Provide a default axios mock that matches typical usage in tests
 vi.mock('axios', () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const axiosFn: any = vi.fn();
   axiosFn.get = vi.fn();
   axiosFn.post = vi.fn();
@@ -19,7 +20,9 @@ vi.mock('axios', () => {
 const originalConsoleError = global.console.error;
 beforeEach(() => {
   vi.spyOn(global.console, 'error').mockImplementation((...args: unknown[]) => {
-    originalConsoleError && args.length === 0 && originalConsoleError();
+    if (originalConsoleError && args.length === 0) {
+      originalConsoleError();
+    }
   });
 });
 

@@ -24,8 +24,7 @@ interface TokenResponse {
  */
 export const generateRandomString = (length: number): string => {
   let text = '';
-  const possible =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
   for (let i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -98,8 +97,7 @@ export const retrieveTokensAxios = async (code: string): Promise<TokenResponse> 
       grant_type: 'authorization_code',
     }),
     headers: {
-      Authorization:
-        'Basic ' + btoa(clientId + ':' + clientSecret),
+      Authorization: 'Basic ' + btoa(clientId + ':' + clientSecret),
       'Content-Type': 'application/x-www-form-urlencoded',
     },
   };
@@ -152,4 +150,4 @@ export const getLoadingPage = (): React.ReactElement => {
       <h2>Loading your Spotify data...</h2>
     </div>
   );
-}; 
+};

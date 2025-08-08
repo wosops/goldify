@@ -83,17 +83,13 @@ export const createGoldifyPlaylist = async (
   playlistDescription: string
 ): Promise<SpotifyPlaylist | undefined> => {
   const headers = basicHeaders(retrievedTokenData);
-  const data: CreatePlaylistRequest = { 
-    name: playlistName, 
-    description: playlistDescription 
+  const data: CreatePlaylistRequest = {
+    name: playlistName,
+    description: playlistDescription,
   };
 
   try {
-    const response = await axios.post<SpotifyPlaylist>(
-      createPlaylistUrl(userId), 
-      data, 
-      headers
-    );
+    const response = await axios.post<SpotifyPlaylist>(createPlaylistUrl(userId), data, headers);
     return response.data;
   } catch (error) {
     console.error('Error creating playlist:', error);
@@ -125,7 +121,9 @@ export const findExistingGoldifyPlaylistByName = async (
     while (url) {
       const response: AxiosResponse<SpotifyPlaylistsResponse> = await axios.get(url, headers);
       const playlists = response.data.items;
-      const playlistFound = playlists.find((playlist: SpotifyPlaylist) => playlist.name === playlistName);
+      const playlistFound = playlists.find(
+        (playlist: SpotifyPlaylist) => playlist.name === playlistName
+      );
       if (playlistFound) {
         return playlistFound;
       }
@@ -154,15 +152,12 @@ export const getPlaylistUrl = (playlistId: string): string => {
  * @returns The response data
  */
 export const getPlaylistById = async (
-  retrievedTokenData: TokenData, 
+  retrievedTokenData: TokenData,
   playlistId: string
 ): Promise<SpotifyPlaylist | undefined> => {
   const headers = basicHeaders(retrievedTokenData);
   try {
-    const response = await axios.get<SpotifyPlaylist>(
-      getPlaylistUrl(playlistId), 
-      headers
-    );
+    const response = await axios.get<SpotifyPlaylist>(getPlaylistUrl(playlistId), headers);
     return response.data;
   } catch (error) {
     console.error('Error getting playlist by ID:', error);
@@ -199,11 +194,7 @@ export const uploadPlaylistImage = async (
   };
 
   try {
-    const response = await axios.put(
-      uploadPlaylistImageUrl(playlistId),
-      imageBase64,
-      headers
-    );
+    const response = await axios.put(uploadPlaylistImageUrl(playlistId), imageBase64, headers);
     if (response.status === 202) {
       return response;
     }
@@ -212,4 +203,4 @@ export const uploadPlaylistImage = async (
     console.error('Error uploading playlist image:', error);
     return undefined;
   }
-}; 
+};

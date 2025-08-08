@@ -5,9 +5,7 @@ import { getSpotifyRedirectURL } from './GoldifySoloUtils';
 import { SpotifyTrack } from './TopListeningDataUtils';
 import { DragEndEvent } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
-import {
-  useSortable,
-} from '@dnd-kit/sortable';
+import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 export interface SortableTrackItem {
@@ -48,23 +46,16 @@ export const handleDragEnd = (
 };
 
 // Drag handle component
-export const DragHandle: React.FC = () => (
-  <span className="move-row-icon"></span>
-);
+export const DragHandle: React.FC = () => <span className="move-row-icon"></span>;
 
 // Individual sortable item
-export const SortableItem: React.FC<SortableItemProps> = ({ 
-  listValue, 
-  removeTrackItemHandler 
+export const SortableItem: React.FC<SortableItemProps> = ({
+  listValue,
+  removeTrackItemHandler,
 }) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: listValue.id || listValue.track.id });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: listValue.id || listValue.track.id,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -73,11 +64,7 @@ export const SortableItem: React.FC<SortableItemProps> = ({
   };
 
   return (
-    <tr 
-      ref={setNodeRef} 
-      style={style} 
-      className="track-data-tr"
-    >
+    <tr ref={setNodeRef} style={style} className="track-data-tr">
       <td className="track-data-td">
         <div {...attributes} {...listeners}>
           <DragHandle />
@@ -99,12 +86,7 @@ export const SortableItem: React.FC<SortableItemProps> = ({
           target="_blank"
           rel="noreferrer"
         >
-          <img
-            alt="Album Art"
-            src={listValue.track.album.images[0]?.url}
-            width="50"
-            height="50"
-          />
+          <img alt="Album Art" src={listValue.track.album.images[0]?.url} width="50" height="50" />
         </a>
       </td>
       <td className="track-data-td">
@@ -120,11 +102,7 @@ export const SortableItem: React.FC<SortableItemProps> = ({
         {listValue.track.album.artists.map((artist, index) => (
           <React.Fragment key={artist.id}>
             {index > 0 && ', '}
-            <a
-              href={getSpotifyRedirectURL('artist', artist.id)}
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href={getSpotifyRedirectURL('artist', artist.id)} target="_blank" rel="noreferrer">
               {artist.name}
             </a>
           </React.Fragment>
@@ -144,13 +122,10 @@ export const SortableItem: React.FC<SortableItemProps> = ({
 };
 
 // Sortable list container
-export const SortableList: React.FC<SortableListProps> = ({ 
-  items, 
-  removeTrackItemHandler,
-}) => {
+export const SortableList: React.FC<SortableListProps> = ({ items, removeTrackItemHandler }) => {
   return (
     <tbody>
-      {items.map((value) => (
+      {items.map(value => (
         <SortableItem
           key={value.id || value.track.id}
           listValue={value}

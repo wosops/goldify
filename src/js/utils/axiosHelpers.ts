@@ -32,4 +32,4 @@ export const postHeaders = (tokenData: TokenData): AxiosConfig => {
       'Content-Type': 'application/json',
     },
   };
-}; 
+};

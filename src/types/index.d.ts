@@ -41,7 +41,7 @@ declare module '*.css' {
 declare module '*.ttf' {
   const content: string;
   export default content;
-} 
+}
 
 // Minimal Jest type shims so existing casts like `as jest.Mock` compile under Vitest
 declare namespace jest {

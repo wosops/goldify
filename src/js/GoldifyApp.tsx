@@ -54,12 +54,7 @@ const AppContent: React.FC = () => {
               aria-label="navigation tabs"
               className="goldify-tabs"
             >
-              <Tab
-                className="goldify-tab"
-                label="Solo"
-                component="a"
-                href={SOLO_PAGE_PATH}
-              />
+              <Tab className="goldify-tab" label="Solo" component="a" href={SOLO_PAGE_PATH} />
             </StyledTabs>
           </Paper>
         </div>
@@ -72,11 +67,7 @@ const AppContent: React.FC = () => {
         <Box className="goldify-footer-container">
           Goldify is powered by
           <a href={spotifyHomePageUrl} target="_blank" rel="noreferrer">
-            <img
-              src={spotifyFullLogoWhite}
-              className="goldify-footer-img"
-              alt="Spotify Logo"
-            />
+            <img src={spotifyFullLogoWhite} className="goldify-footer-img" alt="Spotify Logo" />
           </a>
         </Box>
       </footer>
@@ -92,4 +83,4 @@ const GoldifyApp: React.FC = () => {
   );
 };
 
-export default GoldifyApp; 
+export default GoldifyApp;

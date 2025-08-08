@@ -17,7 +17,9 @@ const GoldifyPlaylist: React.FC<GoldifyPlaylistProps> = ({
   userData,
   autoFillCompletedHandler,
 }) => {
-  const [goldifyPlaylist, setGoldifyPlaylist] = useState<SpotifyPlaylist | null | undefined>(undefined);
+  const [goldifyPlaylist, setGoldifyPlaylist] = useState<SpotifyPlaylist | null | undefined>(
+    undefined
+  );
   const [goldifyPlaylistId, setGoldifyPlaylistId] = useState<string>('');
   const [newlyCreatedPlaylist, setNewlyCreatedPlaylist] = useState<boolean>(false);
 
@@ -49,8 +51,11 @@ const GoldifyPlaylist: React.FC<GoldifyPlaylistProps> = ({
    */
   const retrieveGoldifyPlaylist = async (retrievedTokenData: TokenData): Promise<void> => {
     try {
-      const data = await findExistingGoldifyPlaylistByName(retrievedTokenData, GOLDIFY_PLAYLIST_NAME);
-      
+      const data = await findExistingGoldifyPlaylistByName(
+        retrievedTokenData,
+        GOLDIFY_PLAYLIST_NAME
+      );
+
       if (data === null) {
         setGoldifyPlaylist(null);
       } else if (data === undefined) {
@@ -92,4 +97,4 @@ const GoldifyPlaylist: React.FC<GoldifyPlaylistProps> = ({
   }
 };
 
-export default GoldifyPlaylist; 
+export default GoldifyPlaylist;
