@@ -12,6 +12,8 @@ vi.mock('axios', () => {
   axiosFn.post = vi.fn();
   axiosFn.put = vi.fn();
   axiosFn.delete = vi.fn();
+  // Provide the static type guard commonly used in code/tests
+  axiosFn.isAxiosError = vi.fn(() => false);
   axiosFn.create = vi.fn(() => ({ get: vi.fn(), post: vi.fn(), put: vi.fn(), delete: vi.fn() }));
   return { __esModule: true, default: axiosFn };
 });
