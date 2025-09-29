@@ -8,6 +8,7 @@
 .env
 .yarnrc
 .yarn/*
+dist/
 
 # testing
 /coverage

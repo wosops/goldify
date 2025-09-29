@@ -25,9 +25,9 @@ Before building with Docker, you will need to create your own Spotify Developer 
 Once you have completed this, you will need to create an `.env` file in the root directory of your forked repo. The contents should be as follows:
 
 ```
-REACT_APP_SPOTIFY_CLIENT_ID = "<YOUR_SPOTIFY_CLIENT_ID>"
-REACT_APP_SPOTIFY_CLIENT_SECRET = "<YOUR_SPOTIFY_CLIENT_SECRET>"
-REACT_APP_SPOTIFY_REDIRECT_URI = "<YOUR_SPOTIFY_CLIENT_REDIRECT_URI>"
+VITE_SPOTIFY_CLIENT_ID = "<YOUR_SPOTIFY_CLIENT_ID>"
+VITE_SPOTIFY_CLIENT_SECRET = "<YOUR_SPOTIFY_CLIENT_SECRET>"
+VITE_SPOTIFY_REDIRECT_URI = "<YOUR_SPOTIFY_CLIENT_REDIRECT_URI>"
 ```
 
 ### Running Goldify with Docker
@@ -42,8 +42,8 @@ docker-compose up -d
 If you prefer to run without Docker, you can also run the following:
 
 ```
-yarn install
-yarn run start
+npm ci
+npm run dev
 ```
 
 ## Testing/Linting
@@ -53,13 +53,13 @@ All changes made to this repo should pass testing and linting standards, and wil
 To test and lint your changes locally, the following commands can be used:
 
 ```
-docker-compose exec goldify yarn test
-docker-compose exec goldify yarn lint
+docker-compose exec goldify npm test --silent
+docker-compose exec goldify npm run lint --silent
 ```
 
 If you are running Goldify without Docker, you can run the following:
 
 ```
-yarn test
-yarn lint
+npm test --silent
+npm run lint --silent
 ```
