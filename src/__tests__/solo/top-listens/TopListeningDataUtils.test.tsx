@@ -7,18 +7,6 @@ import {
 import { httpGet, HttpError } from '../../../js/utils/http';
 import { TokenData } from '../../../js/utils/UserInfoUtils';
 
-vi.mock('../../../js/utils/http', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../../../js/utils/http')>();
-  return {
-    ...actual,
-    httpGet: vi.fn(),
-    httpPost: vi.fn(),
-    httpPut: vi.fn(),
-    httpPutBinary: vi.fn(),
-    httpPostForm: vi.fn(),
-  };
-});
-
 const mockedHttpGet = vi.mocked(httpGet);
 
 import * as goldifySoloFixtures from '../../../__fixtures__/GoldifySoloFixtures';

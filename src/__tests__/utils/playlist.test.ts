@@ -14,18 +14,6 @@ import { httpGet, httpPost, httpPutBinary, HttpError } from '../../js/utils/http
 import { goldifyBase64 } from '../../assets/goldifyBase64String';
 import { TokenData } from '../../js/utils/UserInfoUtils';
 
-vi.mock('../../js/utils/http', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../../js/utils/http')>();
-  return {
-    ...actual,
-    httpGet: vi.fn(),
-    httpPost: vi.fn(),
-    httpPut: vi.fn(),
-    httpPutBinary: vi.fn(),
-    httpPostForm: vi.fn(),
-  };
-});
-
 const mockedHttpGet = vi.mocked(httpGet);
 const mockedHttpPost = vi.mocked(httpPost);
 const mockedHttpPutBinary = vi.mocked(httpPutBinary);

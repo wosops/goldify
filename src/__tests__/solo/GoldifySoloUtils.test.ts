@@ -16,18 +16,6 @@ import {
 } from '../../js/utils/GoldifySoloUtils';
 import { httpPostForm, HttpError } from '../../js/utils/http';
 
-vi.mock('../../js/utils/http', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../../js/utils/http')>();
-  return {
-    ...actual,
-    httpGet: vi.fn(),
-    httpPost: vi.fn(),
-    httpPut: vi.fn(),
-    httpPutBinary: vi.fn(),
-    httpPostForm: vi.fn(),
-  };
-});
-
 const mockedHttpPostForm = vi.mocked(httpPostForm);
 
 // Mock window.location

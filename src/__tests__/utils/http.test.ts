@@ -1,4 +1,8 @@
 import { vi, describe, test, expect, beforeEach, afterEach } from 'vitest';
+
+// Opt out of the global http mock from setupTests.ts — this suite tests the real wrapper.
+vi.unmock('../../js/utils/http');
+
 import {
   HttpError,
   isHttpError,
