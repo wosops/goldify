@@ -6,7 +6,7 @@ import { vi } from 'vitest';
 // Globally mock the http wrapper so tests can use vi.mocked(httpGet) etc. without
 // repeating the factory in every file. http.test.ts opts out via vi.unmock to
 // exercise the real wrapper against a stubbed fetch.
-vi.mock('./js/utils/http', async (importOriginal) => {
+vi.mock('./js/utils/http', async importOriginal => {
   const actual = await importOriginal<typeof import('./js/utils/http')>();
   return {
     ...actual,
