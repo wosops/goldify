@@ -1,5 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
-import { basicHeaders } from './axiosHelpers';
+import { httpGet, httpPost, httpPutBinary } from './http';
 import { TokenData } from './UserInfoUtils';
 
 export const limitQueryParam = 50;
@@ -82,15 +81,13 @@ export const createGoldifyPlaylist = async (
   playlistName: string,
   playlistDescription: string
 ): Promise<SpotifyPlaylist | undefined> => {
-  const headers = basicHeaders(retrievedTokenData);
   const data: CreatePlaylistRequest = {
     name: playlistName,
     description: playlistDescription,
   };
 
   try {
-    const response = await axios.post<SpotifyPlaylist>(createPlaylistUrl(userId), data, headers);
-    return response.data;
+    return await httpPost<SpotifyPlaylist>(createPlaylistUrl(userId), data, retrievedTokenData);
   } catch (error) {
     console.error('Error creating playlist:', error);
     return undefined;
@@ -115,19 +112,20 @@ export const findExistingGoldifyPlaylistByName = async (
   retrievedTokenData: TokenData,
   playlistName: string
 ): Promise<SpotifyPlaylist | null> => {
-  const headers = basicHeaders(retrievedTokenData);
   try {
     let url: string | null = getUserPlaylistsUrl();
     while (url) {
-      const response: AxiosResponse<SpotifyPlaylistsResponse> = await axios.get(url, headers);
-      const playlists = response.data.items;
-      const playlistFound = playlists.find(
+      const page: SpotifyPlaylistsResponse = await httpGet<SpotifyPlaylistsResponse>(
+        url,
+        retrievedTokenData
+      );
+      const playlistFound = page.items.find(
         (playlist: SpotifyPlaylist) => playlist.name === playlistName
       );
       if (playlistFound) {
         return playlistFound;
       }
-      url = response.data.next;
+      url = page.next;
     }
     return null;
   } catch (error) {
@@ -155,10 +153,8 @@ export const getPlaylistById = async (
   retrievedTokenData: TokenData,
   playlistId: string
 ): Promise<SpotifyPlaylist | undefined> => {
-  const headers = basicHeaders(retrievedTokenData);
   try {
-    const response = await axios.get<SpotifyPlaylist>(getPlaylistUrl(playlistId), headers);
-    return response.data;
+    return await httpGet<SpotifyPlaylist>(getPlaylistUrl(playlistId), retrievedTokenData);
   } catch (error) {
     console.error('Error getting playlist by ID:', error);
     return undefined;
@@ -185,16 +181,14 @@ export const uploadPlaylistImage = async (
   retrievedTokenData: TokenData,
   playlistId: string,
   imageBase64: string
-): Promise<AxiosResponse | undefined> => {
-  const headers = {
-    headers: {
-      Authorization: `Bearer ${retrievedTokenData.access_token}`,
-      'Content-Type': 'image/jpeg',
-    },
-  };
-
+): Promise<Response | undefined> => {
   try {
-    const response = await axios.put(uploadPlaylistImageUrl(playlistId), imageBase64, headers);
+    const response = await httpPutBinary(
+      uploadPlaylistImageUrl(playlistId),
+      imageBase64,
+      'image/jpeg',
+      retrievedTokenData
+    );
     if (response.status === 202) {
       return response;
     }

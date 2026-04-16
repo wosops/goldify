@@ -1,24 +1,24 @@
 // Extend expect with jest-dom matchers (works in Vitest too)
 import '@testing-library/jest-dom';
 
-// Provide a runtime bridge so existing Jest-style tests continue to work under Vitest
 import { vi } from 'vitest';
 
-// Provide a default axios mock that matches typical usage in tests
-vi.mock('axios', () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const axiosFn: any = vi.fn();
-  axiosFn.get = vi.fn();
-  axiosFn.post = vi.fn();
-  axiosFn.put = vi.fn();
-  axiosFn.delete = vi.fn();
-  // Provide the static type guard commonly used in code/tests
-  axiosFn.isAxiosError = vi.fn(() => false);
-  axiosFn.create = vi.fn(() => ({ get: vi.fn(), post: vi.fn(), put: vi.fn(), delete: vi.fn() }));
-  return { __esModule: true, default: axiosFn };
+// Globally mock the http wrapper so tests can use vi.mocked(httpGet) etc. without
+// repeating the factory in every file. http.test.ts opts out via vi.unmock to
+// exercise the real wrapper against a stubbed fetch.
+vi.mock('./js/utils/http', async importOriginal => {
+  const actual = await importOriginal<typeof import('./js/utils/http')>();
+  return {
+    ...actual,
+    httpGet: vi.fn(),
+    httpPost: vi.fn(),
+    httpPut: vi.fn(),
+    httpPutBinary: vi.fn(),
+    httpPostForm: vi.fn(),
+  };
 });
 
-// Silence noisy console.error logs from axios calls in tests that intentionally simulate failures
+// Silence noisy console.error logs from utility calls in tests that intentionally simulate failures
 const originalConsoleError = global.console.error;
 beforeEach(() => {
   vi.spyOn(global.console, 'error').mockImplementation((...args: unknown[]) => {

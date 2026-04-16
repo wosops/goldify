@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { basicHeaders } from './axiosHelpers';
+import { httpGet, isHttpError } from './http';
 
 export interface SpotifyImage {
   url: string;
@@ -50,21 +49,16 @@ export interface TokenData {
  * @returns Promise resolving to user profile data
  */
 export const retrieveUserDataAxios = async (tokenData: TokenData): Promise<SpotifyUser> => {
-  const headers = basicHeaders(tokenData);
-
   try {
-    const response = await axios.get('https://api.spotify.com/v1/me', headers);
-    return response.data;
+    return await httpGet<SpotifyUser>('https://api.spotify.com/v1/me', tokenData);
   } catch (error) {
     console.error('❌ /me API call failed:', error);
 
-    // Type guard for axios errors
-    if (axios.isAxiosError(error)) {
-      console.error('Error status:', error.response?.status);
-      console.error('Error data:', error.response?.data);
-      console.error('Error headers:', error.response?.headers);
+    if (isHttpError(error)) {
+      console.error('Error status:', error.status);
+      console.error('Error body:', error.body);
     } else {
-      console.error('Non-axios error:', error);
+      console.error('Non-HTTP error:', error);
     }
 
     return { error: 'Failed to retrieve user data' } as SpotifyUser;
