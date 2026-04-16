@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { basicHeaders } from './axiosHelpers';
+import { httpGet, httpPut } from './http';
 import { TokenData } from './UserInfoUtils';
 import { SpotifyTrack } from './TopListeningDataUtils';
 
@@ -55,14 +54,11 @@ export const getPlaylistTracksById = async (
   retrievedTokenData: TokenData,
   playlistId: string
 ): Promise<SpotifyPlaylistTracksResponse | undefined> => {
-  const headers = basicHeaders(retrievedTokenData);
-
   try {
-    const response = await axios.get<SpotifyPlaylistTracksResponse>(
+    return await httpGet<SpotifyPlaylistTracksResponse>(
       playlistTracksUrl(playlistId),
-      headers
+      retrievedTokenData
     );
-    return response.data;
   } catch (error) {
     console.error('Error getting playlist tracks:', error);
     return undefined;
@@ -81,16 +77,14 @@ export const replacePlaylistTracks = async (
   playlistId: string,
   trackUris: string[]
 ): Promise<{ snapshot_id: string } | undefined> => {
-  const headers = basicHeaders(retrievedTokenData);
   const data: ReplaceTracksRequest = { uris: trackUris };
 
   try {
-    const response = await axios.put<{ snapshot_id: string }>(
+    return await httpPut<{ snapshot_id: string }>(
       playlistTracksUrl(playlistId),
       data,
-      headers
+      retrievedTokenData
     );
-    return response.data;
   } catch (error) {
     console.error('Error replacing playlist tracks:', error);
     return undefined;

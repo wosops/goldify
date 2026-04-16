@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import axios from 'axios';
+import { vi } from 'vitest';
 import {
   createPlaylistUrl,
   createGoldifyPlaylist,
@@ -10,17 +10,29 @@ import {
   uploadPlaylistImageUrl,
   uploadPlaylistImage,
 } from '../../js/utils/playlist';
+import { httpGet, httpPost, httpPutBinary, HttpError } from '../../js/utils/http';
 import { goldifyBase64 } from '../../assets/goldifyBase64String';
 import { TokenData } from '../../js/utils/UserInfoUtils';
 
-vi.mock('axios');
-import type { Mocked } from 'vitest';
-const mockedAxios = axios as Mocked<typeof axios>;
+vi.mock('../../js/utils/http', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../../js/utils/http')>();
+  return {
+    ...actual,
+    httpGet: vi.fn(),
+    httpPost: vi.fn(),
+    httpPut: vi.fn(),
+    httpPutBinary: vi.fn(),
+    httpPostForm: vi.fn(),
+  };
+});
+
+const mockedHttpGet = vi.mocked(httpGet);
+const mockedHttpPost = vi.mocked(httpPost);
+const mockedHttpPutBinary = vi.mocked(httpPutBinary);
 
 import * as goldifySoloFixtures from '../../__fixtures__/GoldifySoloFixtures';
 import * as playlistFixtures from '../../__fixtures__/playlistFixtures';
 
-// Mock console.error to avoid noise in tests
 const originalConsoleError = console.error;
 beforeEach(() => {
   console.error = vi.fn();
@@ -65,9 +77,7 @@ test('Creates a Goldify Playlist', async () => {
     playlistName,
     playlistDescription
   );
-  mockedAxios.post.mockResolvedValue({
-    data: playlistResponseData,
-  });
+  mockedHttpPost.mockResolvedValue(playlistResponseData);
 
   const responseData = await createGoldifyPlaylist(
     tokenData,
@@ -84,7 +94,7 @@ test('CreatePlaylist throws error on bad data', async () => {
   const playlistDescription = 'Goldify Goldify';
   const tokenData: TokenData = goldifySoloFixtures.getTokensTestData();
 
-  mockedAxios.post.mockResolvedValue(null);
+  mockedHttpPost.mockRejectedValue(new HttpError(500, 'server error'));
   const result = await createGoldifyPlaylist(tokenData, userId, playlistName, playlistDescription);
   expect(result).toBeUndefined();
   expect(console.error).toHaveBeenCalled();
@@ -95,9 +105,7 @@ test('Gets a Playlist by ID', async () => {
   const tokenData: TokenData = goldifySoloFixtures.getTokensTestData();
 
   const playlistResponseData = playlistFixtures.getPlaylistById(playlistId);
-  mockedAxios.get.mockResolvedValue({
-    data: playlistResponseData,
-  });
+  mockedHttpGet.mockResolvedValue(playlistResponseData);
 
   const responseData = await getPlaylistById(tokenData, playlistId);
   expect(responseData).toEqual(playlistResponseData);
@@ -107,7 +115,7 @@ test('GetPlaylistById throws error on bad data', async () => {
   const playlistId = 'Abcd1234';
   const tokenData: TokenData = goldifySoloFixtures.getTokensTestData();
 
-  mockedAxios.get.mockResolvedValue(null);
+  mockedHttpGet.mockRejectedValue(new HttpError(404, 'not found'));
   const result = await getPlaylistById(tokenData, playlistId);
   expect(result).toBeUndefined();
   expect(console.error).toHaveBeenCalled();
@@ -118,9 +126,7 @@ test('Find a playlist by name that exists', async () => {
   const tokenData: TokenData = goldifySoloFixtures.getTokensTestData();
 
   const userPlaylistResponseData = playlistFixtures.userHasExistingGoldifyPlaylist(playlistName);
-  mockedAxios.get.mockResolvedValue({
-    data: userPlaylistResponseData,
-  });
+  mockedHttpGet.mockResolvedValue(userPlaylistResponseData);
 
   const expectedPlaylist = playlistFixtures.existingGoldifyPlaylist(playlistName);
   const responseData = await findExistingGoldifyPlaylistByName(tokenData, playlistName);
@@ -132,9 +138,7 @@ test('Find a playlist by name that does not exist', async () => {
   const tokenData: TokenData = goldifySoloFixtures.getTokensTestData();
 
   const userPlaylistResponseData = playlistFixtures.userDoesntHaveExistingGoldifyPlaylist();
-  mockedAxios.get.mockResolvedValue({
-    data: userPlaylistResponseData,
-  });
+  mockedHttpGet.mockResolvedValue(userPlaylistResponseData);
 
   const responseData = await findExistingGoldifyPlaylistByName(tokenData, playlistName);
   expect(responseData).toBeNull();
@@ -144,7 +148,7 @@ test('findExistingGoldifyPlaylistByName throws error on bad data', async () => {
   const playlistName = 'Goldify';
   const tokenData: TokenData = goldifySoloFixtures.getTokensTestData();
 
-  mockedAxios.get.mockResolvedValue(null);
+  mockedHttpGet.mockRejectedValue(new HttpError(500, 'server error'));
   const result = await findExistingGoldifyPlaylistByName(tokenData, playlistName);
   expect(result).toBeNull();
   expect(console.error).toHaveBeenCalled();
@@ -155,12 +159,23 @@ test('Upload Goldify Playlist Image', async () => {
   const base64Image = goldifyBase64;
   const tokenData: TokenData = goldifySoloFixtures.getTokensTestData();
 
-  mockedAxios.put.mockResolvedValue({
-    status: 202,
-  });
+  const okResponse = new Response(null, { status: 202 });
+  mockedHttpPutBinary.mockResolvedValue(okResponse);
 
   const responseData = await uploadPlaylistImage(tokenData, playlistId, base64Image);
-  expect(responseData).toEqual({ status: 202 });
+  expect(responseData).toBe(okResponse);
+  expect(responseData?.status).toBe(202);
+});
+
+test('Upload Goldify Playlist returns undefined on non-202 response', async () => {
+  const playlistId = 'testPlaylistId123';
+  const base64Image = goldifyBase64;
+  const tokenData: TokenData = goldifySoloFixtures.getTokensTestData();
+
+  mockedHttpPutBinary.mockResolvedValue(new Response(null, { status: 200 }));
+  const result = await uploadPlaylistImage(tokenData, playlistId, base64Image);
+  expect(result).toBeUndefined();
+  expect(console.error).toHaveBeenCalled();
 });
 
 test('Upload Goldify Playlist throws error on bad data', async () => {
@@ -168,8 +183,8 @@ test('Upload Goldify Playlist throws error on bad data', async () => {
   const base64Image = goldifyBase64;
   const tokenData: TokenData = goldifySoloFixtures.getTokensTestData();
 
-  mockedAxios.put.mockResolvedValue(null);
+  mockedHttpPutBinary.mockRejectedValue(new HttpError(400, 'bad image'));
   const result = await uploadPlaylistImage(tokenData, playlistId, base64Image);
   expect(result).toBeUndefined();
   expect(console.error).toHaveBeenCalled();
-}); 
+});

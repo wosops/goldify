@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom';
-import axios from 'axios';
-import qs from 'qs';
+import { vi } from 'vitest';
 import { spotifyWebPlayerDomain } from '../../js/utils/constants';
 import {
   clientId,
@@ -15,8 +14,21 @@ import {
   getLoadingPage,
   getSpotifyRedirectURL,
 } from '../../js/utils/GoldifySoloUtils';
+import { httpPostForm, HttpError } from '../../js/utils/http';
 
-vi.mock('axios');
+vi.mock('../../js/utils/http', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../../js/utils/http')>();
+  return {
+    ...actual,
+    httpGet: vi.fn(),
+    httpPost: vi.fn(),
+    httpPut: vi.fn(),
+    httpPutBinary: vi.fn(),
+    httpPostForm: vi.fn(),
+  };
+});
+
+const mockedHttpPostForm = vi.mocked(httpPostForm);
 
 // Mock window.location
 const mockReplace = vi.fn();
@@ -25,14 +37,17 @@ let mockHref = '';
 Object.defineProperty(window, 'location', {
   value: {
     replace: mockReplace,
-    get href() { return mockHref; },
-    set href(value) { mockHref = value; },
+    get href() {
+      return mockHref;
+    },
+    set href(value) {
+      mockHref = value;
+    },
     search: '',
   },
   writable: true,
 });
 
-// Reset mocks before each test
 beforeEach(() => {
   mockReplace.mockClear();
   mockHref = '';
@@ -63,9 +78,9 @@ test('The Spotify API Authorization URL has correct components in it', () => {
   const spotifyApiAuthURL = getSpotifyAuthenticationLink();
   expect(spotifyApiAuthURL).toContain('https://accounts.spotify.com/authorize?');
   expect(spotifyApiAuthURL).toContain('response_type=code');
-  expect(spotifyApiAuthURL).toContain('client_id=' + qs.stringify(clientId));
+  expect(spotifyApiAuthURL).toContain('client_id=' + encodeURIComponent(clientId));
   expect(spotifyApiAuthURL).toContain('scope=');
-  expect(spotifyApiAuthURL).toContain('redirect_uri=' + qs.stringify(redirectUri));
+  expect(spotifyApiAuthURL).toContain('redirect_uri=' + encodeURIComponent(redirectUri));
   expect(spotifyApiAuthURL).toContain('state=');
 });
 
@@ -78,32 +93,24 @@ test('Landing page should render null authentication code', () => {
   expect(retrieveAuthenticationCode()).toEqual(null);
 });
 
-test('Check for to make sure retrieveTokensAxios returns correct mock data', async () => {
-  const mockAxios = axios as unknown as import('vitest').Mock;
-  mockAxios.mockResolvedValue({
-    data: goldifySoloFixtures.getTokensTestData(),
-  });
+test('retrieveTokensAxios returns token data on success', async () => {
+  const tokens = goldifySoloFixtures.getTokensTestData();
+  mockedHttpPostForm.mockResolvedValue(tokens);
 
   const responseData = await retrieveTokensAxios('test_code');
-  expect(responseData).toEqual(goldifySoloFixtures.getTokensTestData());
+  expect(responseData).toEqual(tokens);
 });
 
-test('Check for to make sure retrieveTokensAxios throws error on bad data', async () => {
-  const mockAxios = axios as unknown as import('vitest').Mock;
-  mockAxios.mockResolvedValue(null);
+test('retrieveTokensAxios returns an error object when httpPostForm rejects', async () => {
+  const thrown = new HttpError(400, 'invalid_grant');
+  mockedHttpPostForm.mockRejectedValue(thrown);
   console.error = vi.fn();
   const result = await retrieveTokensAxios('test_code');
   expect(result).toEqual({ error: 'Failed to retrieve tokens' });
-  expect(console.error).toHaveBeenCalledWith('Error retrieving tokens:', expect.any(TypeError));
-
-  mockAxios.mockResolvedValue(undefined);
-  console.error = vi.fn();
-  const result2 = await retrieveTokensAxios('test_code');
-  expect(result2).toEqual({ error: 'Failed to retrieve tokens' });
-  expect(console.error).toHaveBeenCalledWith('Error retrieving tokens:', expect.any(TypeError));
+  expect(console.error).toHaveBeenCalledWith('Error retrieving tokens:', thrown);
 });
 
-test('Confirm replaceWindowURL replaces the window with the given URL', async () => {
+test('Confirm replaceWindowURL replaces the window with the given URL', () => {
   replaceWindowURL('TEST_URL');
   expect(mockReplace).toHaveBeenCalledTimes(1);
   expect(mockReplace).toHaveBeenCalledWith('TEST_URL');
@@ -128,4 +135,4 @@ test('Confirm getSpotifyRedirectURL returns proper Spotify URL', () => {
   expect(getSpotifyRedirectURL('test', TEST_ID)).toEqual(
     spotifyWebPlayerDomain + '/test/' + TEST_ID
   );
-}); 
+});

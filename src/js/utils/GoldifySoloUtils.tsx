@@ -1,7 +1,6 @@
 import React from 'react';
 import { env } from './env';
-import axios from 'axios';
-import qs from 'qs';
+import { httpPostForm } from './http';
 import { spotifyWebPlayerDomain } from './constants';
 
 export const clientId = env.VITE_SPOTIFY_CLIENT_ID as string;
@@ -88,23 +87,18 @@ export const retrieveAuthorization = (): void => {
  * @returns Promise resolving to token data
  */
 export const retrieveTokensAxios = async (code: string): Promise<TokenResponse> => {
-  const authOptions = {
-    method: 'POST',
-    url: 'https://accounts.spotify.com/api/token',
-    data: qs.stringify({
-      code: code,
-      redirect_uri: redirectUri,
-      grant_type: 'authorization_code',
-    }),
-    headers: {
-      Authorization: 'Basic ' + btoa(clientId + ':' + clientSecret),
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-  };
-
   try {
-    const response = await axios(authOptions);
-    return response.data;
+    return await httpPostForm<TokenResponse>(
+      'https://accounts.spotify.com/api/token',
+      {
+        code,
+        redirect_uri: redirectUri,
+        grant_type: 'authorization_code',
+      },
+      {
+        Authorization: 'Basic ' + btoa(clientId + ':' + clientSecret),
+      }
+    );
   } catch (error) {
     console.error('Error retrieving tokens:', error);
     return { error: 'Failed to retrieve tokens' } as TokenResponse;

@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { basicHeaders } from './axiosHelpers';
+import { httpGet } from './http';
 import { TokenData } from './UserInfoUtils';
 
 export const shortTermTimeRangeQueryParam = 'short_term';
@@ -104,28 +103,23 @@ export const getTopListeningDataSpotifyApiURL = (timeRangeQueryParam: string): s
 export const retrieveTopListeningDataAxios = async (
   retrievedTokenData: TokenData
 ): Promise<TopListeningData | undefined> => {
-  const headers = basicHeaders(retrievedTokenData);
   try {
-    const [shortTermResponse, mediumTermResponse, longTermResponse] = await Promise.all([
-      axios.get<SpotifyTopTracksResponse>(
+    const [short_term, medium_term, long_term] = await Promise.all([
+      httpGet<SpotifyTopTracksResponse>(
         getTopListeningDataSpotifyApiURL(shortTermTimeRangeQueryParam),
-        headers
+        retrievedTokenData
       ),
-      axios.get<SpotifyTopTracksResponse>(
+      httpGet<SpotifyTopTracksResponse>(
         getTopListeningDataSpotifyApiURL(mediumTermTimeRangeQueryParam),
-        headers
+        retrievedTokenData
       ),
-      axios.get<SpotifyTopTracksResponse>(
+      httpGet<SpotifyTopTracksResponse>(
         getTopListeningDataSpotifyApiURL(longTermTimeRangeQueryParam),
-        headers
+        retrievedTokenData
       ),
     ]);
 
-    return {
-      short_term: shortTermResponse.data,
-      medium_term: mediumTermResponse.data,
-      long_term: longTermResponse.data,
-    };
+    return { short_term, medium_term, long_term };
   } catch (error) {
     console.error('Error retrieving top listening data:', error);
     return undefined;
